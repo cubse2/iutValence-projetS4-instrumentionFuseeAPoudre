@@ -1,16 +1,16 @@
 #include "IMUData.h"
 
 IMUData::IMUData(XYZData acceleration, XYZData gyroscope, 
-        XYZData magnetism, float a_pressure)
+        XYZData magnetism, float pressure)
 {
-    accelerationX = acceleration.getX();
-    accelerationY = acceleration.getY();
-    accelerationZ = acceleration.getZ();
-    gyroscopeX = gyroscope.getX();
-    gyroscopeY = gyroscope.getY();
-    gyroscopeZ = gyroscope.getZ();
-    magnetismX = magnetism.getX();
-    magnetismY = magnetism.getY();
-    magnetismZ = magnetism.getZ();
-    pressure = pressure;  
+    this->accelerationX = acceleration.getX();
+    this->accelerationY = acceleration.getY();
+    this->accelerationZ = acceleration.getZ();
+    this->gyroscopeX = gyroscope.getX();
+    this->gyroscopeY = gyroscope.getY();
+    this->gyroscopeZ = gyroscope.getZ();
+    this->magnetismX = magnetism.getX();
+    this->magnetismY = magnetism.getY();
+    this->magnetismZ = magnetism.getZ();
+    this->pressure = pressure;  
 }

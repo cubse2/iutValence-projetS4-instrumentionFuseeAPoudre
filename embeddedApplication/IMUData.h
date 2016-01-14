@@ -1,3 +1,5 @@
+#include "XYZData.h"
+
 #ifndef IMUData_h
 #define IMUData_h
 
@@ -18,9 +20,8 @@ class IMUData
     float pressure;
     
   public:
-  // XYZData a modifier
     IMUData(XYZData acceleration, XYZData gyroscope, 
-        XYZData magnetism, float a_pressure)
-}
+      XYZData magnetism, float pressure);
+};
 
 #endif

@@ -1,5 +1,7 @@
+#include "IMUData.h"
+
 float t ;
-IMUData imuData;
+//IMUData imuData;
 float pressureMax = 0;
 float pressure;
 void setup() {
@@ -9,7 +11,7 @@ void setup() {
 
 void loop() {
   
-  pressure = imuData.getBarometerValue()
+//  pressure = imuData.getBarometerValue()
   // ************************* Parachute ************************* //
   
   if(pressure < pressureMax)
@@ -18,35 +20,35 @@ void loop() {
   }
   else
   {
-    deployeParachute();
+//    deployeParachute();
   }
   // ************************* End Parachute ************************* //
   
   
   // ************************* Ring ************************* //
-  if (pressure = PressureMax)
-  {
-    ring();
-  }
+//  if (pressure = PressureMax)
+//  {
+//    ring();
+//  }
   // ************************* End Ring ************************* //
   
   // ************************* Save Data ************************* //
-  t = getTime();               // millis()
-  imuData = getIMUData();
+//  t = getTime();               // millis()
+//  imuData = getIMUData();
   char row[90];                  // t+Gx+Gy+Gz+Az+Ay+Az+Mx+My+Mz+B (t+Gyro+Accele+Magnet+Baro)    
   sprintf(row, "%.3f", t);
     
-  for (i = 0; i< sizeof(imuData); i++) 
-  {
-    row = row + ";" + imuData[i].toString();
-  }
+//  for (i = 0; i< sizeof(imuData); i++) 
+//  {
+//    row = row + ";" + imuData[i].toString();
+//  }
   
-  saveData(row);
+//  saveData(row);
   // ************************* End Save Data ************************* //
   
   
   // ************************* Send Data ************************* //
-  //sendData(row)
+//  sendData(row)
   // ************************* End Send Data ************************* //
 
 }
