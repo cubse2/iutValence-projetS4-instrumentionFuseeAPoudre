@@ -1,4 +1,5 @@
 #include "XYZData.h"
+#include "stdio.h"
 
 XYZData::XYZData(float x, float y, float z)
 {
@@ -7,17 +8,9 @@ XYZData::XYZData(float x, float y, float z)
   this->z = z;
 };
 
-float XYZData::getX()
+char* XYZData::toChar()
 {
-  return x;
-};
-
-float XYZData::getY()
-{
-  return y;
-};
-
-float XYZData::getZ()
-{
-  return z;
+  char xyzData[24];
+  sprintf(xyzData, "%.3f;%.3f;%.3f;", x,y,z);
+  return xyzData;
 };

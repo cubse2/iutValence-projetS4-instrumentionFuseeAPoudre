@@ -3,14 +3,22 @@
 IMUData::IMUData(XYZData acceleration, XYZData gyroscope, 
         XYZData magnetism, float pressure)
 {
-    this->accelerationX = acceleration.getX();
-    this->accelerationY = acceleration.getY();
-    this->accelerationZ = acceleration.getZ();
-    this->gyroscopeX = gyroscope.getX();
-    this->gyroscopeY = gyroscope.getY();
-    this->gyroscopeZ = gyroscope.getZ();
-    this->magnetismX = magnetism.getX();
-    this->magnetismY = magnetism.getY();
-    this->magnetismZ = magnetism.getZ();
+    this->acceleration = acceleration;
+    this->gyroscope = gyroscope;
+    this->magnetism = magnetism;
     this->pressure = pressure;  
+}
+
+char* IMUData::toChar()
+{
+	char imuData[72];
+	char presureChar[7];
+	sprintf(presureChar, "%.3f;", pressure);
+
+	strcpy(imuData, acceleration.toChar());
+	strcat(imuData, gyroscope.toChar());
+	strcat(imuData, magnetism.toChar());
+	strcat(imuData, pressureChar);
+
+  	return imuData;
 }

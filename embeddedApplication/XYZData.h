@@ -11,9 +11,7 @@ class XYZData
    
   public:
     XYZData(float x, float y, float z);
-    float getX();
-    float getY();
-    float getZ();
+    char* toChar();
 };
 
 #endif
