@@ -10,7 +10,8 @@ class TimeStampedIMUData : public IMUData
     unsigned long timestamp;
     
   public:
-    TimeStampedIMUData(XYZData acceleration, XYZData gyroscope, XYZData magnetisme)
+    TimeStampedIMUData(XYZData acceleration, XYZData gyroscope, XYZData magnetisme);
+    char* toChar() const;
 };
 
 #endif

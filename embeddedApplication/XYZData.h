@@ -11,7 +11,7 @@ class XYZData
    
   public:
     XYZData(float x, float y, float z);
-    char* toChar();
+    char* toChar() const;
 };
 
 #endif

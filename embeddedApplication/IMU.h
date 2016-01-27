@@ -8,11 +8,11 @@
 class IMU
 {
   public:
-    XYZData getAccelerationData();
-    XYZData getMagnetismData();
-    XYZData getGyroscopeData();
-    float getBarometerData();
-    IMUData getIMUData();
+    virtual XYZData getAccelerationData() = 0;
+    virtual XYZData getMagnetismData() = 0;
+    virtual XYZData getGyroscopeData() = 0;
+    virtual float getBarometerData() = 0;
+    virtual IMUData getIMUData() = 0;
 };
 
 #endif
