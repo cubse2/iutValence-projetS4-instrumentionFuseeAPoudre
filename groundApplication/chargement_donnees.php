@@ -1,23 +1,24 @@
 <?php
 
+require_once 'config/config.php';
+
 function loadFile(){
 
-        if ($_FILES['file']['error'] != 0) {
+        if ($_FILES['importedFile']['error'] != 0) {
             return "Une erreur c'est produite durant le transfert";
         }
-        if(!move_uploaded_file($_FILES['file']['tmp_name'], "tmp/".FILE_FLIGHT_DATA)){
+        if(!move_uploaded_file($_FILES['importedFile']['tmp_name'], FILE_FLIGHT_DATA)){
             return "Une erreur s'est produite durant la copie du fichier";
         }
         return TRUE;
 }
 
 if(isset($_POST['submit'])){
-    if ($error = loadFile()){
-        header("Location: tableau_bord_post_vol.php");
+    $message = loadFile();
+    if ($message === TRUE){
+        header("Location: index.php");
     }
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="fr-FR">
@@ -34,8 +35,7 @@ if(isset($_POST['submit'])){
     <body>
         <div class="main small-w100">
             <h1>Chargement des données</h1>
-            <form enctype="multipart/form-data" action="" method="post">
-                <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+            <form enctype="multipart/form-data" action="?" method="post">
                 <div class="grid-2">
                      <div class="input-group flex-item-double">
                         <div class="fileUpload button input-group-addon">

@@ -6,13 +6,13 @@ require_once 'config/config.php';
         require_once "class/$class.php";
     }
 
-    $timeStampedFileFlightDataStorage = new TimeStampedFileFlightDataStorage(new TimeStampedFileFlightDataReader());
+    //$timeStampedFileFlightDataStorage = new TimeStampedFileFlightDataStorage(new TimeStampedFileFlightDataReader());
 
-    $timeStampedFileFlightDataStorage->readFromFile();
+    //$timeStampedFileFlightDataStorage->readFromFile();
 
-    echo "<pre>";
-    var_dump($timeStampedFileFlightDataStorage->timeStampedFlightDataSampleTable);
-    echo "</pre>";
+    //echo "<pre>";
+    //var_dump($timeStampedFileFlightDataStorage->timeStampedFlightDataSampleTable);
+    //echo "</pre>";
 
 ?>
 <!DOCTYPE html>
