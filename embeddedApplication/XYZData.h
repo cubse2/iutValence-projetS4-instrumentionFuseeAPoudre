@@ -1,6 +1,7 @@
-#ifndef XYZData_h
-#define XYZData_h
+#ifndef XYZDATA_H
+#define XYZDATA_H
 
+#include <Arduino.h>
 
 class XYZData
 {
@@ -10,7 +11,11 @@ class XYZData
     float z;
    
   public:
+    XYZData();
     XYZData(float x, float y, float z);
+        void setX(float x);
+    void setY(float y);
+    void setZ(float z);
     char* toChar() const;
 };
 

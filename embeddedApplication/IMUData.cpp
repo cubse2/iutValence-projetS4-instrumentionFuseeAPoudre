@@ -1,23 +1,25 @@
 #include "IMUData.h"
 
-IMUData::IMUData(XYZData acceleration, XYZData gyroscope, 
-        XYZData magnetism, float pressure)
+
+IMUData::IMUData(XYZData *acceleration, XYZData *gyroscope, XYZData *magnetism, float pressure)
 {
     this->acceleration = acceleration;
     this->gyroscope = gyroscope;
     this->magnetism = magnetism;
-    this->pressure = pressure;  
+    this->pressure = pressure;
 }
+
+
 
 char* IMUData::toChar() const
 {
 	char imuData[72];
-	char presureChar[7];
-	sprintf(presureChar, "%.3f;", pressure);
+	char pressureChar[7];
+	sprintf(pressureChar, "%.3f;", pressure);
 
-	strcpy(imuData, acceleration.toChar());
-	strcat(imuData, gyroscope.toChar());
-	strcat(imuData, magnetism.toChar());
+	strcpy(imuData, acceleration->toChar());
+	strcat(imuData, gyroscope->toChar());
+	strcat(imuData, magnetism->toChar());
 	strcat(imuData, pressureChar);
 
   	return imuData;

@@ -2,6 +2,8 @@
 #define TimeStampedIMUData_h
 
 #include "IMUData.h"
+#include <Arduino.h>
+
 
 class TimeStampedIMUData : public IMUData
 {
@@ -10,8 +12,9 @@ class TimeStampedIMUData : public IMUData
     unsigned long timestamp;
     
   public:
-    TimeStampedIMUData(XYZData acceleration, XYZData gyroscope, XYZData magnetisme);
-    char* toChar() const;
+    TimeStampedIMUData(XYZData acceleration, XYZData gyroscope,
+    		XYZData magnetisme, float pressure, unsigned long time):IMUData(acceleration, gyroscope, magnetisme, pressure);
+    char* toChar();
 };
 
 #endif
