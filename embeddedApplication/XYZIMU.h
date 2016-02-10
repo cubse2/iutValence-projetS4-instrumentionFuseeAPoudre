@@ -1,4 +1,3 @@
-
 #ifndef IMUData_h
 #define IMUData_h
 
