@@ -14,14 +14,14 @@ float t ;
 float pressureMax = 0;
 float pressure;
 
+XYZIMU imu = XYZIMU();
+XYZData *acceleration = new XYZData();
+XYZData *gyro = new XYZData();
+XYZData *magnetic = new XYZData();
+IMUData data(acceleration, gyro, magnetic,0.0f);
+
 void setup() {
   Serial.begin(9600);
-  XYZData *acceleration = new XYZData();
-  XYZData *gyro = new XYZData();
-  XYZData *magnetic = new XYZData();
-  
-  IMUData data(acceleration, gyro, magnetic,0.0f);
-  XYZIMU imu = XYZIMU();
 }
 
 void loop() {
@@ -30,6 +30,11 @@ void loop() {
   //data = imu.getIMUData();
 
   //Serial.println(data.toChar());
+  
+  //il faut implémenter avec les setters pour la mémoir ensuit fusionner cette partie avec le beeper
+  imu.getAccelerationData(acceleration);
+  
+  Serial.println(acceleration->toChar());
   
 //  pressure = imuData.getBarometerValue()
   // ************************* Parachute ************************* //
