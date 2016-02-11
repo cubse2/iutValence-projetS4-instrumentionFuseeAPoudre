@@ -13,7 +13,7 @@ class XYZData
   public:
     XYZData();
     XYZData(float x, float y, float z);
-        void setX(float x);
+    void setX(float x);
     void setY(float y);
     void setZ(float z);
     char* toChar() const;
