@@ -11,9 +11,6 @@
 #include <Adafruit_10DOF.h>
 
 
-
-
-
 class XYZIMU : public IMU
 {
   private:

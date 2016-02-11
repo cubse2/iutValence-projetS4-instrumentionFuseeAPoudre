@@ -8,7 +8,6 @@ XYZData::XYZData()
   this->z = 0.0;
 }
 
-
 XYZData::XYZData(float x, float y, float z)
 {
   this->x = x;

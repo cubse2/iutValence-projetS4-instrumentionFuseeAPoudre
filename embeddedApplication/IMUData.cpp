@@ -9,8 +9,6 @@ IMUData::IMUData(XYZData *acceleration, XYZData *gyroscope, XYZData *magnetism, 
     this->pressure = pressure;
 }
 
-
-
 char* IMUData::toChar() const
 {
 	char imuData[72];

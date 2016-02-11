@@ -32,6 +32,6 @@ float XYZIMU::getBarometerData()
 	}
 
 XYZIMU::XYZIMU() : event()
-{
-  	//event ...
-}
+	{
+  		//event ...
+	}

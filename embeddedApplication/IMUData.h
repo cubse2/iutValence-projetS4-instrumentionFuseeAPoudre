@@ -4,8 +4,6 @@
 #include "XYZData.h"
 
 
-
-
 class IMUData
 {
   private:
@@ -20,5 +18,6 @@ class IMUData
       XYZData *magnetism, float pressure);
     char* toChar() const;
 };
+
 #endif
 
