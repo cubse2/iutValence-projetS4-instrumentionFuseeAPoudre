@@ -5,8 +5,8 @@
 
 class BeeperController
 {
-	protected:
-    	virtual void ring();
+  protected:
+	virtual void ring();
 };
 
 #endif
