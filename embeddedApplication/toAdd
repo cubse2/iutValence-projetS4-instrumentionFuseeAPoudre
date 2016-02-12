@@ -1,0 +1,13 @@
+#define S_PIN 8
+
+#include "ConcretBeeperController.h"
+
+ConcretBeeperController bip = ConcretBeeperController(S_PIN);
+void setup() {
+  
+  bip.ring();
+}
+
+void loop() {
+  bip.ring();
+}
