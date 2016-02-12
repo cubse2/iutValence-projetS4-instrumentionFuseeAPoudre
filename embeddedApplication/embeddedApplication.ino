@@ -33,8 +33,14 @@ void loop() {
   
   //il faut implémenter avec les setters pour la mémoir ensuit fusionner cette partie avec le beeper
   imu.getAccelerationData(acceleration);
+  imu.getGyroscopeData(gyro);
+  imu.getMagnetismData(magnetic);
+  pressure = imu.getBarometerData();
   
-  Serial.println(acceleration->toChar());
+  data.setIMUData(acceleration, gyro, magnetic, pressure);
+  
+  
+  Serial.println(data.toChar());
   
 //  pressure = imuData.getBarometerValue()
   // ************************* Parachute ************************* //
