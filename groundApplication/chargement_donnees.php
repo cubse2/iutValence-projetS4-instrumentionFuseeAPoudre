@@ -16,7 +16,7 @@ function loadFile(){
 if(isset($_POST['submit'])){
     $message = loadFile();
     if ($message === TRUE){
-        header("Location: index.php");
+        header("Location: visualiser_donnee_post_vol.php");
     }
 }
 ?>

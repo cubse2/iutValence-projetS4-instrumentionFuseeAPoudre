@@ -6,32 +6,37 @@ class postFlightMonitor {
     
     public function __construct($flightDataStorage) {
         $this->flightDataStorage = $flightDataStorage;
+        if(empty($this->flightDataStorage->timeStampedFlightDataSampleTable)){
+            $this->flightDataStorage->readFromFile();
+        }
     }
     
-    private function createYAccelerationAndTimeTable(){
+    public function createYAccelerationAndTimeTable(){
         $AccelerationYAndTime = array();
         foreach($this->flightDataStorage->timeStampedFlightDataSampleTable as $flightDataSample){
             $AccelerationYAndTime['time'][] =  $flightDataSample->getTimestamp();
-            $AccelerationYAndTime['AccelerationY'][] =  $flightDataSample->getAccelerationY();
+            $AccelerationYAndTime['accelerationY'][] =  $flightDataSample->getAccelerationY();
         }
-        return $YAccelerationAndTime;
+        return $AccelerationYAndTime;
     }
     
-    private function createVelocityYAndTimeTable(){
-        $gyroscopeYAndTime = array();
+    public function createVelocityYAndTimeTable(){
+        $velocityYAndTime = array();
+        $prevVelocityYValue = 0;
+        $prevTimeValue = 0;
         foreach($this->flightDataStorage->timeStampedFlightDataSampleTable as $flightDataSample){
-            $gyroscopeYAndTime['time'][] =  $flightDataSample->getTimestamp();
-            $gyroscopeYAndTime['gyroscopeY'][] =  $flightDataSample->getGyroscopeY();
+            $velocityYAndTime['time'][] =  $flightDataSample->getTimestamp();
+            $velocityYAndTime['velocityY'][] =  $prevVelocityYValue + $flightDataSample->getAccelerationY() * ($flightDataSample->getTimestamp() - $prevTimeValue);
         }
-        return $gyroscopeYAndTime;
+        return $velocityYAndTime;
     }
     
-    private function createAltitudeAndTimeTable(){
+    public function createAltitudeAndTimeTable(){
         $altitudeAndTime = array();
         foreach($this->flightDataStorage->timeStampedFlightDataSampleTable as $flightDataSample){
-            $gyroscopeYAndTime['time'][] =  $flightDataSample->getTimestamp();
-            $gyroscopeYAndTime['altitude'][] =  44330*(bcpow(1-($flightDataSample->getGyroscopeY()/1013.25),(1/5.255)));
+            $altitudeAndTime['time'][] =  $flightDataSample->getTimestamp();
+            $altitudeAndTime['altitude'][] =  44330*(bcpow(1-($flightDataSample->getPressure()/1013.25),(1/5.255),3));
         }
-        return $gyroscopeYAndTime;
+        return $altitudeAndTime;
     }
 }
