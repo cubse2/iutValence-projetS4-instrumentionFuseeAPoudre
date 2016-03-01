@@ -3,7 +3,6 @@
 
 #include "XYZData.h"
 
-
 class IMUData
 {
   private:
@@ -20,10 +19,10 @@ class IMUData
     void setGyroscope(XYZData *gyroscopeData);
     void setMagnetism(XYZData *magnetismData);
     void setPressure(float pressureData);
-    void setIMUData(XYZData *accelerationData, XYZData *gyroscopeData,
-          XYZData *magnetismData, float pressureData);
-    char* toChar() const;
+    void setIMUData(XYZData *accelerationData, XYZData *gyroscopeData, 
+      XYZData *magnetismData, float pressureData);
+    char* toChar();
 };
-
 #endif
+
 

@@ -26,7 +26,7 @@ void IMUData::setPressure(float pressureData)
   this->pressure = pressureData;
 }
 
-void IMUData::setIMUData(XYZData *accelerationData, XYZData *gyroscopeData,
+void IMUData::setIMUData(XYZData *accelerationData, XYZData *gyroscopeData, 
       XYZData *magnetismData, float pressureData)
 {
   setAcceleration(accelerationData);
@@ -35,16 +35,17 @@ void IMUData::setIMUData(XYZData *accelerationData, XYZData *gyroscopeData,
   setPressure(pressureData);
 }
 
-char* IMUData::toChar() const
+char* IMUData::toChar()
 {
-	char imuData[72];
-	char pressureChar[7];
-	sprintf(pressureChar, "%.3f;", pressure);
+	char imuData[150]; 
+	char pressureData[8];
+  dtostrf(pressure, 4, 2, pressureData);
 
 	strcpy(imuData, acceleration->toChar());
 	strcat(imuData, gyroscope->toChar());
 	strcat(imuData, magnetism->toChar());
-	strcat(imuData, pressureChar);
+	strcat(imuData, pressureData);
 
-  	return imuData;
+  return imuData;
 }
+

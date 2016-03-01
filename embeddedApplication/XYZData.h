@@ -16,7 +16,8 @@ class XYZData
     void setX(float x);
     void setY(float y);
     void setZ(float z);
-    char* toChar() const;
+    char* toChar();
 };
 
 #endif
+
