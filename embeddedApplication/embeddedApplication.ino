@@ -7,8 +7,12 @@
 
 #include "XYZIMU.h"
 #include "IMUData.h"
+#include "ConcretBeeperController.h"
 
-float t ;
+#define S_PIN 8
+
+ConcretBeeperController bip = ConcretBeeperController(S_PIN);
+
 //IMUData imuData;
 float pressureMax = 0;
 float pressure;
@@ -49,10 +53,12 @@ void setup() {
     Serial.print("Ooops, no L3GD20 detected ... Check your wiring or I2C ADDR!");
     while(1);
   }
+  // BEEPER
+  bip.ring();
 }
 
 void loop() {
-
+  
   // Insert les nouvelles valeurs 
   imu.getAccelerationData(acceleration);
   imu.getGyroscopeData(gyro);
@@ -64,6 +70,9 @@ void loop() {
   Serial.println(data.toChar());
   delay(1000);
 
+
+
+//  Partie Permettant les tests
 //  Serial.println("Chaque XYZData");
 //  Serial.println(acceleration->toChar());
 //  Serial.println(gyro->toChar());
@@ -98,7 +107,7 @@ void loop() {
   // ************************* Ring ************************* //
 //  if (pressure = PressureMax)
 //  {
-//    ring();
+//    bip.ring();
 //  }
   // ************************* End Ring ************************* //
   

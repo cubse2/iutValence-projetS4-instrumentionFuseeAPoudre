@@ -12,6 +12,6 @@ void ConcretBeeperController::ring()
     int noteDuration = 1000 / noteDurations;
     
     tone(beeperPin, song, noteDuration);
-    delay(60000);
+    //delay(60000);
     noTone(beeperPin);
 }
