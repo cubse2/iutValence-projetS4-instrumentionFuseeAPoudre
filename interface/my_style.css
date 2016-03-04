@@ -31,8 +31,13 @@ body {
     height: 100%;
     width: 100%;
     vertical-align: middle;
-    background: url("background.jpg") no-repeat fixed center / 150% auto;
+    background: url("img/background.jpg") no-repeat fixed center / 150% auto;
     font-family: georgia, "trebuchet ms", arial, serif; 
+}
+
+.tableau-bord {
+    vertical-align: initial;
+    padding: 20px;
 }
 
 .main {
@@ -113,4 +118,10 @@ h1 {
 
 input[type="submit"] {
     border: transparent;
+}
+
+.window {
+    background-color: white;
+    margin-top: 20px;
+    padding: 20px;
 }

@@ -9,7 +9,7 @@
 <html lang="fr-FR">
     <head>
         <title>Menu</title>
-        <meta name="description" content="Extrait les donnéesdu fichier généré par l'application embarqué">
+        <meta name="description" content="Extrait les donn�es du fichier généré par l'application embarqué">
         <meta charset="UTF-8">
         <meta name="author" content="Baptiste Thevenet">
         <link rel="stylesheet" type="text/css" href="skeleton.css">
