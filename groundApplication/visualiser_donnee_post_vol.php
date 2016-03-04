@@ -28,6 +28,11 @@ $altitudeValues = implode(',',$altitude['altitude']);
 $velocity = $postFlightMonitor->createVelocityYAndTimeTable();
 $velocityLabels = implode(',',$velocity['time']);
 $velocityValues = implode(',',$velocity['velocityY']);
+
+$path3D = $postFlightMonitor->createPosition();
+echo "<pre>";
+var_dump($path3D);
+echo "<pre>";
 ?>
 <!DOCTYPE html>
 <html lang="fr-FR">
@@ -65,24 +70,6 @@ $velocityValues = implode(',',$velocity['velocityY']);
         ]
     };
     var ctx = document.getElementById("acceleration").getContext("2d");
-    var myNewChart = new Chart(ctx).Line(data);
-    
-    var data = {
-        labels: [<?php echo $altitudeLabels ?>],
-        datasets: [
-            {
-                label: "Altitude",
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [<?php echo $altitudeValues ?>]
-            }
-        ]
-    };
-    var ctx = document.getElementById("altitude").getContext("2d");
     var myNewChart = new Chart(ctx).Line(data);
     
     var data = {
