@@ -5,7 +5,7 @@
 <head>
 <title>Tableau de bord post-vol</title>
 <meta name="description"
-	content="Affichage des donn�es charg�es par l'application">
+	content="Affichage des données chargées par l'application">
 <meta charset="UTF-8">
 <meta name="author" content="Baptiste Thevenet">
 <link rel="stylesheet" type="text/css" href="skeleton.css">

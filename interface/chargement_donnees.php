@@ -1,13 +1,13 @@
 <?php
-if (isset ( $_FILES ["donnees-file-to-import"] )) {
-	$name = $_FILES ["donnees-file-to-import"] ["name"];
-	echo 'name : ', $name;
-	$type = $_FILES ["donnees-file-to-import"] ["type"];
-	echo 'type : ', $type;
-	$size = $_FILES ["donnees-file-to-import"] ["size"];
-	echo 'size : ', $size;
-	header ( "Location:tableau_bord_post_vol.php" );
+$fileErr = "";
+if (isset ( $_POST ["submit"] )) {
+	if (is_uploaded_file ( $_FILES ['donnees-file-to-import'] ['tmp_name'] )) {
+		header ( "Location:tableau_bord_post_vol.php" );
+	} else {
+		$fileErr = "Un fichier est requis";
+	}
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr-FR">
@@ -25,7 +25,9 @@ if (isset ( $_FILES ["donnees-file-to-import"] )) {
 <body>
 	<div class="main small-w100">
 		<h1>Chargement des données</h1>
-		<form enctype="multipart/form-data" action="" method="post">
+		<form enctype="multipart/form-data"
+			action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
+			method="post">
 			<input type="hidden" name="MAX_FILE_SIZE" value="30000" />
 			<div class="grid-2">
 				<div class="input-group flex-item-double">
@@ -34,11 +36,13 @@ if (isset ( $_FILES ["donnees-file-to-import"] )) {
 							type="file" id="donnees-file-to-import"
 							name="donnees-file-to-import" class="upload" />
 					</div>
-					<input class="fileUpload form-control" id="uploadFile" type="text"
+					<input class="fileUpload form-control" id="uploadFile"
+						name="uploadFile" type="text"
 						placeholder="Sélectionner un fichier" disabled="disabled" />
 				</div>
+				<span class="error flex-item-double"><?php echo $fileErr;?></span>
 				<div>
-					<input type="submit" value="OK" class="w100p" />
+					<input type="submit" value="OK" class="w100p" name="submit" />
 				</div>
 				<div>
 					<a href="index.php" class="button w100p">Menu</a>
