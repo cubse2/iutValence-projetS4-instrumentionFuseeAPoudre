@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     Created on : 12 janv. 2016, 11:58:58
     Author     : thevenba
 */
-
 html {
     display: table;
     table-layout: fixed;
@@ -31,17 +30,23 @@ body {
     height: 100%;
     width: 100%;
     vertical-align: middle;
-    background: url("background.jpg") no-repeat fixed center / 150% auto;
-    font-family: georgia, "trebuchet ms", arial, serif; 
+    background: url("img/background.jpg") no-repeat fixed center/150% auto;
+    font-family: georgia, "trebuchet ms", arial, serif;
+}
+
+.tableau-bord {
+    vertical-align: initial;
+    padding: 20px;
 }
 
 .main {
-    background-color: rgba(0,0,0,.6);
+    background-color: rgba(0, 0, 0, .6);
     width: 500px;
     text-align: center;
     margin-right: auto;
     margin-left: auto;
     padding: 60px;
+    color: white;
 }
 
 h1 {
@@ -52,6 +57,7 @@ h1 {
     position: relative;
     overflow: hidden;
 }
+
 .fileUpload input.upload {
     position: absolute;
     top: 0;
@@ -61,7 +67,7 @@ h1 {
     font-size: 20px;
     cursor: pointer;
     opacity: 0;
-    filter: alpha(opacity=0);
+    filter: alpha(opacity = 0);
 }
 
 .input-group {
@@ -113,4 +119,14 @@ h1 {
 
 input[type="submit"] {
     border: transparent;
+}
+
+.window {
+    background-color: white;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.error {
+    color: red;
 }
