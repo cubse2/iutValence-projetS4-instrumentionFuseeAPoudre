@@ -49,6 +49,9 @@ $velocityLabels = implode(',',$velocity['time']);
 $velocityValues = implode(',',$velocity['velocityY']);
 
 $path3D = $postFlightMonitor->createPosition();
+$path3DX = implode(',', $path3D['x']);
+$path3DY = implode(',', $path3D['y']);
+$path3DZ = implode(',', $path3D['z']);
 ?>
 <!DOCTYPE html>
 <html lang="fr-FR">
@@ -99,6 +102,7 @@ $path3D = $postFlightMonitor->createPosition();
                     <span class="flex-item-fluid">Trajectoire 3D</span> <span
                         class="w200p"><a href="#" class="button">Agrandir</a></span>
                 </div>
+                <div id="path"></div>
             </div>
             <div class="window">
                 <div class='flex-container'>
@@ -125,6 +129,7 @@ $path3D = $postFlightMonitor->createPosition();
     </body>
 </html>
 <!--<script src="myScript.js"></script>-->
+<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
     Chart.types.Line.extend({
         name: "LineAlt",
@@ -180,4 +185,39 @@ $path3D = $postFlightMonitor->createPosition();
     };
     var ctx = document.getElementById("velocity").getContext("2d");
     new Chart(ctx).LineAlt(data, options);
+    
+    var trace1 = {
+    x: [<?php echo $path3DX ?>],
+    y: [<?php echo $path3DY ?>],
+    z: [<?php echo $path3DZ ?>],
+    mode: 'lines',
+    marker: {
+        color: '#1f77b4',
+        size: 12,
+        symbol: 'circle',
+        line: {
+          color: 'rgb(0,0,0)',
+          width: 0
+        }
+      },
+      line: {
+        color: '#1f77b4',
+        width: 1
+      },
+      type: 'scatter3d'
+    };
+    var data = [trace1];
+    var layout = {
+      title: '3D Line Plot',
+      autosize: false,
+      width: 500,
+      height: 500,
+      margin: {
+        l: 0,
+        r: 0,
+        b: 0,
+        t: 65
+      }
+    };
+    Plotly.newPlot('path', data, layout);
 </script>
