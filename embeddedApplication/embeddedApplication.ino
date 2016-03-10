@@ -68,6 +68,7 @@ void loop() {
   // tout dans le IMUData data
   data.setIMUData(acceleration, gyro, magnetic, altitude);
   Serial.println(data.toChar());
+  
   delay(1000);
 
 
