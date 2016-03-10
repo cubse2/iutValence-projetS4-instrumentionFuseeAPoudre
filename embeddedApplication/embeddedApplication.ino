@@ -5,17 +5,25 @@
 #include <Adafruit_L3GD20_U.h>
 #include <Adafruit_10DOF.h>
 
+#include <SPI.h>
+#include <SD.h>
+#include "FillStorageservice.h" 
 #include "XYZIMU.h"
 #include "IMUData.h"
 #include "ConcretBeeperController.h"
 
-#define S_PIN 8
 
+#define S_PIN 8
 ConcretBeeperController bip = ConcretBeeperController(S_PIN);
+
+File myFile;
+FillStorageService *fillStorage;
 
 //IMUData imuData;
 float altitudeMax = 0;
 float altitude;
+
+int compteur = 0;
     
 XYZIMU imu = XYZIMU();
 XYZData *acceleration = new XYZData();
@@ -23,10 +31,12 @@ XYZData *gyro = new XYZData();
 XYZData *magnetic = new XYZData();
 IMUData data(acceleration, gyro, magnetic,0.0f);
 
+
 void setup() {
   Serial.begin(9600);
-  Serial.println("test"); 
-
+  /**************************************************************/
+  /************************** Les capteurs **********************/
+  /**************************************************************/
   Serial.println(F("Adafruit 10DOF Tester")); Serial.println("");
   /* Initialise the sensors */
   if(!imu.accel.begin())
@@ -53,8 +63,35 @@ void setup() {
     Serial.print("Ooops, no L3GD20 detected ... Check your wiring or I2C ADDR!");
     while(1);
   }
-  // BEEPER
+  
+  /**************************************************************/
+  /***************** Le fichier de sauvgarde*********************/
+  /**************************************************************/
+  pinMode(SS, OUTPUT);
+  
+  if (!SD.begin(4,11,12,13)) {
+  Serial.println("initialization failed!");
+  return; // a changer pour un song disant que ce n'est pas pret à enregistrer (erreur)
+  }
+  Serial.println("initialization done.");
+  // a changer pour le song pret à enregistrer (en bas)
+  
+  myFile = SD.open("test.txt", FILE_WRITE);
+  
+  if (myFile) {
+    Serial.print("test : ");
+  } else {
+    // a changer pour un song disant que ce n'est pas pret à enregistrer (erreur)
+  }
+  
+  fillStorage = new FillStorageService(myFile);
+  
+  /**************************************************************/
+  /************************** Le beepeur   **********************/
+  /**************************************************************/
   bip.ring();
+  
+  
 }
 
 void loop() {
@@ -113,23 +150,20 @@ void loop() {
   // ************************* End Ring ************************* //
   
   // ************************* Save Data ************************* //
-//  t = getTime();               // millis()
-//  imuData = getIMUData();
-//  char row[90];                  // t+Gx+Gy+Gz+Az+Ay+Az+Mx+My+Mz+B (t+Gyro+Accele+Magnet+Baro)    
-//  sprintf(row, "%.3f", t);
-    
-//  for (i = 0; i< sizeof(imuData); i++) 
-//  {
-//    row = row + ";" + imuData[i].toString();
-//  }
-  
-//  saveData(row);
+
+fillStorage->saveData(data.toChar());
+
   // ************************* End Save Data ************************* //
   
   
   // ************************* Send Data ************************* //
 //  sendData(row)
   // ************************* End Send Data ************************* //
+  
+  if(compteur == 10)
+  {
+    myFile.close();
+  }
 
 }
 
