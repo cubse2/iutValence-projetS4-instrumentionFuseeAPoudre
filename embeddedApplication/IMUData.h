@@ -7,7 +7,7 @@ class IMUData
 {
   private:
  
-    float pressure;
+    float altitude;
     XYZData *acceleration;
     XYZData *gyroscope;
     XYZData *magnetism;
@@ -18,9 +18,9 @@ class IMUData
     void setAcceleration(XYZData *accelerationData);
     void setGyroscope(XYZData *gyroscopeData);
     void setMagnetism(XYZData *magnetismData);
-    void setPressure(float pressureData);
+    void setAltitude(float altitudeData);
     void setIMUData(XYZData *accelerationData, XYZData *gyroscopeData, 
-      XYZData *magnetismData, float pressureData);
+      XYZData *magnetismData, float altitude);
     char* toChar();
 };
 #endif

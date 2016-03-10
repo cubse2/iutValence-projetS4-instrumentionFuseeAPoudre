@@ -27,8 +27,10 @@ void XYZIMU::getGyroscopeData(XYZData *data)
 
 float XYZIMU::getBarometerData()
 	{
-		bmp.getEvent(&event);
- return event.pressure;
+  bmp.getEvent(&event);
+  float temperature;
+  bmp.getTemperature(&temperature); 
+  return bmp.pressureToAltitude(SENSORS_PRESSURE_SEALEVELHPA, event.pressure, temperature); 
 	}
 
 XYZIMU::XYZIMU() : event()

@@ -14,8 +14,8 @@
 ConcretBeeperController bip = ConcretBeeperController(S_PIN);
 
 //IMUData imuData;
-float pressureMax = 0;
-float pressure;
+float altitudeMax = 0;
+float altitude;
     
 XYZIMU imu = XYZIMU();
 XYZData *acceleration = new XYZData();
@@ -63,10 +63,10 @@ void loop() {
   imu.getAccelerationData(acceleration);
   imu.getGyroscopeData(gyro);
   imu.getMagnetismData(magnetic);
-  pressure = imu.getBarometerData(); //4.2
+  altitude = imu.getBarometerData(); //4.2
 
   // tout dans le IMUData data
-  data.setIMUData(acceleration, gyro, magnetic, pressure);
+  data.setIMUData(acceleration, gyro, magnetic, altitude);
   Serial.println(data.toChar());
   delay(1000);
 
