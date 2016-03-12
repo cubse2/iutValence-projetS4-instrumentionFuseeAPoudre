@@ -75,27 +75,29 @@ $path3DZ = implode(',', $path3D['z']);
                     <span class="flex-item-fluid">Données Chargées</span> <span
                         class="w200p"><a href="tableau_bord_post_vol.php?action=export_data" class="button">Exporter les données</a></span>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Temps</th>
-                            <th>Vitesse axe Y</th>
-                            <th>Accélération axe Y</th>
-                            <th>Altitude</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                            for ($i = 0; $i < count($acceleration['time']); $i++){
-                                echo "<tr>";
-                                echo "<td>",$acceleration['time'][$i],"</td>";
-                                echo "<td>",$velocity['velocityY'][$i],"</td>";
-                                echo "<td>",$acceleration['accelerationY'][$i],"</td>";
-                                echo "<td>",$altitude['altitude'][$i],"</td>";
-                            }
-                        ?>
-                    </tbody>
-                </table>
+                <div style="max-height: 300px; overflow-y: auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Temps</th>
+                                <th>Vitesse axe Y</th>
+                                <th>Accélération axe Y</th>
+                                <th>Altitude</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                for ($i = 0; $i < count($acceleration['time']); $i++){
+                                    echo "<tr>";
+                                    echo "<td>",$acceleration['time'][$i],"</td>";
+                                    echo "<td>",$velocity['velocityY'][$i],"</td>";
+                                    echo "<td>",$acceleration['accelerationY'][$i],"</td>";
+                                    echo "<td>",$altitude['altitude'][$i],"</td>";
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="window">
                 <div class='flex-container'>
@@ -150,6 +152,25 @@ $path3DZ = implode(',', $path3D['z']);
         scaleGridLineColor: "rgba(0,0,0,.05)",
         scaleGridLineWidth: 1
     };
+
+    var data = {
+        labels: [<?php echo $altitudeLabels ?>],
+        datasets: [
+            {
+                label: "Altitude",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [<?php echo $altitudeValues ?>]
+            }
+        ]
+    };
+    var ctx = document.getElementById("altitude").getContext("2d");
+    new Chart(ctx).LineAlt(data, options);
+
     var data = {
         labels: [<?php echo $accelerationLabels ?>],
         datasets: [

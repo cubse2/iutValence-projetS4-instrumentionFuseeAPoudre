@@ -39,7 +39,8 @@ class postFlightMonitor {
         $altitudeAndTime = array();
         foreach($this->flightDataStorage->timeStampedFlightDataSampleTable as $flightDataSample){
             $altitudeAndTime['time'][] =  $flightDataSample->getTimestamp();
-            $altitudeAndTime['altitude'][] =  44330*(bcpow(1-($flightDataSample->getPressure()/1013.25),(1/5.255),3));
+            //$altitudeAndTime['altitude'][] =  44330*(bcpow(1-($flightDataSample->getPressure()/1013.25),(1/5.255),3));
+            $altitudeAndTime['altitude'][] =  $flightDataSample->getPressure();
         }
         return $altitudeAndTime;
     }
