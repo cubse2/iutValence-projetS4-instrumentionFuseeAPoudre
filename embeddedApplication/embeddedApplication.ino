@@ -69,17 +69,27 @@ void setup() {
   /**************************************************************/
   pinMode(SS, OUTPUT);
   
-  if (!SD.begin(4,11,12,13)) {
-  Serial.println("initialization failed!");
-  return; // a changer pour un song disant que ce n'est pas pret à enregistrer (erreur)
+  if (!SD.begin(4)) {//pin 4 
+    Serial.println("initialization failed!");
+    return; // a changer pour un song disant que ce n'est pas pret à enregistrer (erreur)
   }
   Serial.println("initialization done.");
   // a changer pour le song pret à enregistrer (en bas)
   
+  if (SD.exists("test.txt")){ 
+    Serial.println("example.txt exists.");
+    Serial.println("Removing example.txt...");
+    SD.remove("test.txt");
+  }
+  else {
+    Serial.println("example.txt doesn't exist.");  
+  }
+  
   myFile = SD.open("test.txt", FILE_WRITE);
   
   if (myFile) {
-    Serial.print("test : ");
+    Serial.println("test : ");
+    //myFile.println("Values:");
   } else {
     // a changer pour un song disant que ce n'est pas pret à enregistrer (erreur)
   }
@@ -89,9 +99,8 @@ void setup() {
   /**************************************************************/
   /************************** Le beepeur   **********************/
   /**************************************************************/
-  bip.ring();
-  
-  
+  bip.errorRing();
+    
 }
 
 void loop() {
@@ -100,7 +109,7 @@ void loop() {
   imu.getAccelerationData(acceleration);
   imu.getGyroscopeData(gyro);
   imu.getMagnetismData(magnetic);
-  altitude = imu.getBarometerData(); //4.2
+  altitude = imu.getBarometerData();
 
   // tout dans le IMUData data
   data.setIMUData(acceleration, gyro, magnetic, altitude);
@@ -129,7 +138,7 @@ void loop() {
 //  Serial.println("fin");
 
   
-  // ************************* Parachute ************************* //
+  /************************* Parachute *************************/
   
 //  if(pressure < pressureMax)
 //  {
@@ -139,30 +148,31 @@ void loop() {
 //  {
 //    deployeParachute();
 //  }
-  // ************************* End Parachute ************************* //
+  /************************* End Parachute *************************/
   
   
-  // ************************* Ring ************************* //
+  /************************* Ring *************************/
 //  if (pressure = PressureMax)
 //  {
 //    bip.ring();
 //  }
-  // ************************* End Ring ************************* //
+  /************************* End Ring *************************/
   
-  // ************************* Save Data ************************* //
+  /************************* Save Data *************************/
 
-fillStorage->saveData(data.toChar());
+ fillStorage->saveData(data.toChar());
 
-  // ************************* End Save Data ************************* //
+  /************************* End Save Data *************************/
   
   
-  // ************************* Send Data ************************* //
+  /************************* Send Data *****************************/
 //  sendData(row)
-  // ************************* End Send Data ************************* //
-  
+  /************************* End Send Data *************************/
+  compteur = compteur +1;
   if(compteur == 10)
   {
     myFile.close();
+    Serial.println("fin");
   }
 
 }

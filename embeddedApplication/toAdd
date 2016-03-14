@@ -1,1 +1,12 @@
 #define S_PIN 8
+
+//
+Connect the SCL pin on the breakout to the SCL on a Mega it is also known as digital 21
+Connect the SDA pin on the breakout to on a Mega it is also known as digital 20 
+Connect the VIN pin on the breakout to 5V 
+Connect the GND pin on the breakout to the GND pin on your Uno
+
+MOSI - pin 51, 
+MISO - pin 50, 
+CLK - pin 52, 
+CS - pin 4 (CS pin can be changed) and pin #52 (SS) must be an output

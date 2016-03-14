@@ -10,6 +10,7 @@ class ConcretBeeperController : public BeeperController
   public:
 	ConcretBeeperController(int beeperPin);
 	void ring();
+        void errorRing();
 };
 
 #endif
