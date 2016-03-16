@@ -17,10 +17,25 @@ void ConcretBeeperController::ring()
     noTone(beeperPin);
 }
 
-void ConcretBeeperController::errorRing()
+void ConcretBeeperController::errorOfSDCardRing()
 {
     int melody[] = {262, 196};
     int noteDurations[] = {2, 1};
+    
+    for(int note = 0; note < sizeof(melody); note++ )
+    {
+      int noteDuration = 1000 / noteDurations[note];
+      tone(beeperPin, melody[note], noteDuration);
+      int pauseBetweenNotes = noteDuration * 1.30;
+      delay(pauseBetweenNotes);
+      noTone(beeperPin);
+    }
+}
+
+void ConcretBeeperController::errorOfSensorRing()
+{
+    int melody[] = {262, 196, 196};
+    int noteDurations[] = {2, 1, 2};
     
     for(int note = 0; note < sizeof(melody); note++ )
     {
