@@ -14,10 +14,11 @@
 
 
 #define S_PIN 8
-ConcretBeeperController bip = ConcretBeeperController(S_PIN);
 
 File myFile;
 FillStorageService *fillStorage;
+
+ConcretBeeperController bip = ConcretBeeperController(S_PIN);
 
 //IMUData imuData;
 float altitudeMax = 0;
@@ -44,25 +45,42 @@ void setup() {
   {
     /* There was a problem detecting the ADXL345 ... check your connections */
     Serial.println(F("Ooops, no LSM303 detected ... Check your wiring!"));
-    while(1);
+    while(1)
+    {
+      bip.errorOfSensorRing();
+      delay(10000);
+    };
   }
   if(!imu.mag.begin())
   {
     /* There was a problem detecting the LSM303 ... check your connections */
     Serial.println("Ooops, no LSM303 detected ... Check your wiring!");
-    while(1);
+    bip.errorOfSensorRing();
+    while(1)
+    {
+      bip.errorOfSensorRing();
+      delay(10000);
+    };
   }
   if(!imu.bmp.begin())
   {
     /* There was a problem detecting the BMP085 ... check your connections */
     Serial.print("Ooops, no BMP085 detected ... Check your wiring or I2C ADDR!");
-    while(1);
+    while(1)
+    {
+      bip.errorOfSensorRing();
+      delay(10000);
+    };
   }
   if(!imu.gyro.begin())
   {
     /* There was a problem detecting the L3GD20 ... check your connections */
     Serial.print("Ooops, no L3GD20 detected ... Check your wiring or I2C ADDR!");
-    while(1);
+    while(1)
+    {
+      bip.errorOfSensorRing();
+      delay(10000);
+    };
   }
   
   /**************************************************************/
