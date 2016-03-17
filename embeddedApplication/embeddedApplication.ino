@@ -137,16 +137,13 @@ void loop() {
   
   if(altitudeMin == 0)
   {
-    altitudeMin = altitudeData;
+    altitudeMin = trunc(altitudeData);
   }
-  Serial.println(altitudeMin);
-  Serial.println(altitudeData);
   
   /************************* Record *************************/
   
   if(altitudeData > altitudeMin + 1)
   {
-    Serial.println("Je suis rentré !!!!!!!!!!");
     while(1)
     {
       imu.getAccelerationData(accelerationData);
