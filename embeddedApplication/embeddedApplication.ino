@@ -11,15 +11,17 @@
 #include "XYZIMU.h"
 #include "IMUData.h"
 #include "ConcretBeeperController.h"
+#include <Servo.h>
 
-
-#define S_PIN 8
+#define SERVO_PIN 9
+#define SPEAKER_PIN 8
 #define NB_RECORD 2
+#define ROTATION 180
 
 File myFile;
 FillStorageService *fillStorage;
-
-ConcretBeeperController bip = ConcretBeeperController(S_PIN);
+Servo myServo;
+ConcretBeeperController bip = ConcretBeeperController(SPEAKER_PIN);
 
 //IMUData imuData;
 float altitudeMin = 0;
@@ -125,6 +127,7 @@ void setup() {
   /************************** Le beepeur   **********************/
   /**************************************************************/
   bip.ring();
+  myServo.attach(SERVO_PIN);
 
 }
 
@@ -144,6 +147,7 @@ void loop() {
   
   if(altitudeData > altitudeMin + 1)
   {
+    Serial.println("OK !!!!!");
     while(1)
     {
       imu.getAccelerationData(accelerationData);
@@ -179,9 +183,11 @@ void loop() {
       {
         altitudeMax = altitudeData;
       }
-      else if(altitudeMax - altitudeData == 1);
+      else 
+      if(altitudeMax - altitudeData > 1)
       {
-        //deployeParachute();
+        Serial.println("fin !!!!");
+        myServo.write(ROTATION);
       }
   /************************* End Parachute *************************/
   
