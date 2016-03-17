@@ -22,13 +22,17 @@ void ConcretBeeperController::errorOfSDCardRing()
     int melody[] = {262, 196};
     int noteDurations[] = {2, 1};
     
-    for(int note = 0; note < sizeof(melody); note++ )
+    while(1)
     {
-      int noteDuration = 1000 / noteDurations[note];
-      tone(beeperPin, melody[note], noteDuration);
-      int pauseBetweenNotes = noteDuration * 1.30;
-      delay(pauseBetweenNotes);
-      noTone(beeperPin);
+      for(int note = 0; note < sizeof(melody); note++ )
+      {
+        int noteDuration = 1000 / noteDurations[note];
+        tone(beeperPin, melody[note], noteDuration);
+        int pauseBetweenNotes = noteDuration * 1.30;
+        delay(pauseBetweenNotes);
+        noTone(beeperPin);
+      }
+      delay(10000);
     }
 }
 
@@ -37,12 +41,16 @@ void ConcretBeeperController::errorOfSensorRing()
     int melody[] = {262, 196, 196};
     int noteDurations[] = {2, 1, 2};
     
-    for(int note = 0; note < sizeof(melody); note++ )
+    while(1)
     {
-      int noteDuration = 1000 / noteDurations[note];
-      tone(beeperPin, melody[note], noteDuration);
-      int pauseBetweenNotes = noteDuration * 1.30;
-      delay(pauseBetweenNotes);
-      noTone(beeperPin);
+      for(int note = 0; note < sizeof(melody); note++ )
+      {
+        int noteDuration = 1000 / noteDurations[note];
+        tone(beeperPin, melody[note], noteDuration);
+        int pauseBetweenNotes = noteDuration * 1.30;
+        delay(pauseBetweenNotes);
+        noTone(beeperPin);
+      }
+      delay(10000);
     }
 }

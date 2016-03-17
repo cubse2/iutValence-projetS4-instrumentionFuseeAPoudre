@@ -31,6 +31,21 @@ void XYZData::setZ(float z)
     this->z = z;
 }
 
+float XYZData::getX()
+{
+  return x;
+}
+
+float XYZData::getY()
+{
+  return y;
+}
+
+float XYZData::getZ()
+{
+  return z;
+}
+
 char* XYZData::toChar()
 {
   char xyzData[50];
@@ -53,4 +68,3 @@ char* XYZData::toChar()
 
   return xyzData;
 }
-

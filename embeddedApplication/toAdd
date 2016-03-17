@@ -10,3 +10,4 @@ MOSI - pin 51,
 MISO - pin 50, 
 CLK - pin 52, 
 CS - pin 4 (CS pin can be changed) and pin #52 (SS) must be an output
+

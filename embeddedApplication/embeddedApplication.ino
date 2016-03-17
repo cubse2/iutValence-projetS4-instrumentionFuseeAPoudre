@@ -14,6 +14,7 @@
 
 
 #define S_PIN 8
+#define NB_RECORD 2
 
 File myFile;
 FillStorageService *fillStorage;
@@ -21,66 +22,56 @@ FillStorageService *fillStorage;
 ConcretBeeperController bip = ConcretBeeperController(S_PIN);
 
 //IMUData imuData;
+float altitudeMin = 0;
 float altitudeMax = 0;
-float altitude;
-
-int compteur = 0;
+float altitudeData = 0;
+XYZData *accelerationData = new XYZData();
+XYZData *gyroscopData = new XYZData();
+XYZData *magneticData = new XYZData();
     
 XYZIMU imu = XYZIMU();
-XYZData *acceleration = new XYZData();
-XYZData *gyro = new XYZData();
-XYZData *magnetic = new XYZData();
-IMUData data(acceleration, gyro, magnetic,0.0f);
+XYZData *recordAcceleration = new XYZData();
+XYZData *recordGyroscop = new XYZData();
+XYZData *recordMagnetic = new XYZData();
+IMUData data(accelerationData, gyroscopData, magneticData,0.0f);
 
 
 void setup() {
   
-  Serial.begin(9600);
+  Serial.begin(115200);
   /**************************************************************/
   /************************** Les capteurs **********************/
   /**************************************************************/
-  Serial.println(F("Adafruit 10DOF Tester")); Serial.println("");
+  Serial.println(F("Adafruit 10DOF Tester")); 
+  Serial.println("");
+  
   /* Initialise the sensors */
   if(!imu.accel.begin())
   {
     /* There was a problem detecting the ADXL345 ... check your connections */
     Serial.println(F("Ooops, no LSM303 detected ... Check your wiring!"));
-    while(1)
-    {
-      bip.errorOfSensorRing();
-      delay(10000);
-    };
+    bip.errorOfSensorRing();
   }
+  
   if(!imu.mag.begin())
   {
     /* There was a problem detecting the LSM303 ... check your connections */
     Serial.println("Ooops, no LSM303 detected ... Check your wiring!");
     bip.errorOfSensorRing();
-    while(1)
-    {
-      bip.errorOfSensorRing();
-      delay(10000);
-    };
   }
+ 
   if(!imu.bmp.begin())
   {
     /* There was a problem detecting the BMP085 ... check your connections */
     Serial.print("Ooops, no BMP085 detected ... Check your wiring or I2C ADDR!");
-    while(1)
-    {
-      bip.errorOfSensorRing();
-      delay(10000);
-    };
+    bip.errorOfSensorRing();
   }
+  
   if(!imu.gyro.begin())
   {
     /* There was a problem detecting the L3GD20 ... check your connections */
     Serial.print("Ooops, no L3GD20 detected ... Check your wiring or I2C ADDR!");
-    while(1)
-    {
-      bip.errorOfSensorRing();
-      delay(10000);
-    };
+    bip.errorOfSensorRing();
   }
   
   /**************************************************************/
@@ -88,29 +79,44 @@ void setup() {
   /**************************************************************/
   pinMode(SS, OUTPUT);
   
-  if (!SD.begin(4)) {//pin 4 
+  /*Initialisation de la carte*/
+  if (!SD.begin(4)) 
+  {
     Serial.println("initialization failed!");
-    return; // a changer pour un song disant que ce n'est pas pret à enregistrer (erreur)
+    bip.errorOfSDCardRing();
   }
   Serial.println("initialization done.");
-  // a changer pour le song pret à enregistrer (en bas)
   
-  if (SD.exists("test.txt")){ 
-    Serial.println("example.txt exists.");
-    Serial.println("Removing example.txt...");
-    SD.remove("test.txt");
+  /*Espace memoire*/   // A revoir
+  //uint32_t volumesize;
+  //volumesize = volume.blocksPerCluster();    // clusters are collections of blocks
+  //volumesize *= volume.clusterCount();       // we'll have a lot of clusters
+  //volumesize *= 512;                         // SD card blocks are always 512 bytes
+  
+  
+  /*Si le fichier existe deja*/
+  if (SD.exists("flight.txt"))
+  { 
+    Serial.println("flight.txt exists.");
+    Serial.println("Removing flight.txt...");
+    SD.remove("flight.txt");
   }
-  else {
-    Serial.println("example.txt doesn't exist.");  
+  else 
+  {
+    Serial.println("flight.txt doesn't exist.");  
   }
   
-  myFile = SD.open("test.txt", FILE_WRITE);
+  /*Creer le fichier*/
+  myFile = SD.open("flight.txt", FILE_WRITE);
   
+  /*Debut*/
   if (myFile) {
-    Serial.println("test : ");
+    Serial.println("Flight Data : ");
     //myFile.println("Values:");
-  } else {
-    // a changer pour un song disant que ce n'est pas pret à enregistrer (erreur)
+  } 
+  else 
+  {
+    bip.errorOfSDCardRing();
   }
   
   fillStorage = new FillStorageService(myFile);
@@ -119,80 +125,113 @@ void setup() {
   /************************** Le beepeur   **********************/
   /**************************************************************/
   bip.ring();
-    
+
 }
 
 void loop() {
   
-  // Insert les nouvelles valeurs 
-  imu.getAccelerationData(acceleration);
-  imu.getGyroscopeData(gyro);
-  imu.getMagnetismData(magnetic);
-  altitude = imu.getBarometerData();
-
-  // tout dans le IMUData data
-  data.setIMUData(acceleration, gyro, magnetic, altitude);
-  Serial.println(data.toChar());
+  imu.getAccelerationData(accelerationData);
+  imu.getGyroscopeData(gyroscopData);
+  imu.getMagnetismData(magneticData);
+  altitudeData = imu.getBarometerData();
   
-  delay(1000);
-
-
-
-//  Partie Permettant les tests
-//  Serial.println("Chaque XYZData");
-//  Serial.println(acceleration->toChar());
-//  Serial.println(gyro->toChar());
-//  Serial.println(magnetic->toChar());
-//  Serial.println("");
-//  Serial.println("la pression");
-//  Serial.println(pressure);
-//  char pressureData[8];
-//  dtostrf(pressure, 4, 2, pressureData);
-//  Serial.println(pressureData);
-//
-//  Serial.println("");
-//  Serial.println("Affiche tout");
-//  Serial.println(data.toChar());
-//  
-//  Serial.println("fin");
-
+  if(altitudeMin == 0)
+  {
+    altitudeMin = altitudeData;
+  }
+  Serial.println(altitudeMin);
+  Serial.println(altitudeData);
   
+  /************************* Record *************************/
+  
+  if(altitudeData > altitudeMin + 1)
+  {
+    Serial.println("Je suis rentré !!!!!!!!!!");
+    while(1)
+    {
+      imu.getAccelerationData(accelerationData);
+      imu.getGyroscopeData(gyroscopData);
+      imu.getMagnetismData(magneticData);
+      altitudeData = imu.getBarometerData();
+      
+      for(int nbOfRecord = 0; nbOfRecord <= NB_RECORD-1; nbOfRecord++)
+      {
+        imu.getAccelerationData(recordAcceleration);
+        imu.getGyroscopeData(recordGyroscop);
+        imu.getMagnetismData(recordMagnetic);
+        addValue(accelerationData, recordAcceleration);
+        addValue(gyroscopData, recordGyroscop);
+        addValue(magneticData, recordMagnetic);
+        altitudeData = altitudeData + imu.getBarometerData();
+      }
+
+      averageValue(accelerationData, NB_RECORD);
+      averageValue(gyroscopData, NB_RECORD);
+      averageValue(magneticData, NB_RECORD);
+      altitudeData = altitudeData / NB_RECORD;
+    
+      // tout dans le IMUData data
+      data.setIMUData(accelerationData, gyroscopData, magneticData, altitudeData);
+      Serial.println(data.toChar());
+      //Serial.println(altitudeData);
+  
+
   /************************* Parachute *************************/
   
-//  if(pressure < pressureMax)
-//  {
-//    pressureMax = pressure;
-//  }
-//  else
-//  {
-//    deployeParachute();
-//  }
+      if(altitudeData > altitudeMax)
+      {
+        altitudeMax = altitudeData;
+      }
+      else if(altitudeMax - altitudeData == 1);
+      {
+        //deployeParachute();
+      }
   /************************* End Parachute *************************/
   
-  
-  /************************* Ring *************************/
-//  if (pressure = PressureMax)
-//  {
-//    bip.ring();
-//  }
-  /************************* End Ring *************************/
-  
   /************************* Save Data *************************/
-
- fillStorage->saveData(data.toChar());
+  
+      fillStorage->saveData(data.toChar());
+      
 
   /************************* End Save Data *************************/
   
   
   /************************* Send Data *****************************/
-//  sendData(row)
+  //  sendData(row)
   /************************* End Send Data *************************/
-  compteur = compteur +1;
-  if(compteur == 10)
-  {
-    myFile.close();
-    Serial.println("fin");
+  
+  /***************  Partie Permettant les tests  *******************/
+  //  Serial.println("Chaque XYZData");
+  //  Serial.println(acceleration->toChar());
+  //  Serial.println(gyro->toChar());
+  //  Serial.println(magnetic->toChar());
+  //  Serial.println("");
+  //  Serial.println("la pression");
+  //  Serial.println(pressure);
+  //  char pressureData[8];
+  //  dtostrf(pressure, 4, 2, pressureData);
+  //  Serial.println(pressureData);
+  //
+  //  Serial.println("");
+  //  Serial.println("Affiche tout");
+  //  Serial.println(data.toChar());
+  //  
+  //  Serial.println("fin");
+    }
   }
-
+  
 }
 
+void addValue(XYZData *data, XYZData *add)
+{
+  data->setX(data->getX()+add->getX());
+  data->setY(data->getY()+add->getY());
+  data->setZ(data->getZ()+add->getZ());
+}
+
+void averageValue(XYZData *data, int average)
+{
+  data->setX(data->getX()/average);
+  data->setY(data->getY()/average);
+  data->setZ(data->getZ()/average);
+}
