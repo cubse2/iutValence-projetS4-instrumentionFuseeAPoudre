@@ -15,13 +15,15 @@
 
 #define SERVO_PIN 9
 #define SPEAKER_PIN 8
-#define NB_RECORD 2
+#define NB_RECORD 5
 #define ROTATION 180
 
 File myFile;
 FillStorageService *fillStorage;
 Servo myServo;
 ConcretBeeperController bip = ConcretBeeperController(SPEAKER_PIN);
+
+bool parachute = false;
 
 //IMUData imuData;
 float altitudeMin = 0;
@@ -137,17 +139,30 @@ void loop() {
   imu.getGyroscopeData(gyroscopData);
   imu.getMagnetismData(magneticData);
   altitudeData = imu.getBarometerData();
+  Serial.println("-------------------");
+  Serial.println(altitudeData);
+  
+  for(int nbOfRecord = 1; nbOfRecord < 10 ; nbOfRecord++)
+  {
+    altitudeData = altitudeData + imu.getBarometerData();
+  }
+  
+  altitudeData = altitudeData/10;
   
   if(altitudeMin == 0)
   {
-    altitudeMin = trunc(altitudeData);
+    altitudeMin = altitudeData;
+    Serial.println(altitudeMin);
   }
+  Serial.println(altitudeData);
+  Serial.println("-------------------");
   
   /************************* Record *************************/
   
   if(altitudeData > altitudeMin + 1)
   {
     Serial.println("OK !!!!!");
+    bip.ring();
     while(1)
     {
       imu.getAccelerationData(accelerationData);
@@ -155,7 +170,7 @@ void loop() {
       imu.getMagnetismData(magneticData);
       altitudeData = imu.getBarometerData();
       
-      for(int nbOfRecord = 0; nbOfRecord <= NB_RECORD-1; nbOfRecord++)
+      for(int nbOfRecord = 1; nbOfRecord < NB_RECORD; nbOfRecord++)
       {
         imu.getAccelerationData(recordAcceleration);
         imu.getGyroscopeData(recordGyroscop);
@@ -184,10 +199,12 @@ void loop() {
         altitudeMax = altitudeData;
       }
       else 
-      if(altitudeMax - altitudeData > 1)
+      if(altitudeMax - altitudeData > 1 && parachute == false)
       {
         Serial.println("fin !!!!");
+        bip.ring();
         myServo.write(ROTATION);
+        parachute = true;
       }
   /************************* End Parachute *************************/
   
