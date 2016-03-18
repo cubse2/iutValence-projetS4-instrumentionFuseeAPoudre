@@ -1,22 +1,23 @@
-#include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_LSM303_U.h>
 #include <Adafruit_BMP085_U.h>
 #include <Adafruit_L3GD20_U.h>
 #include <Adafruit_10DOF.h>
-
+#include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
+#include <Servo.h>
 #include "FillStorageservice.h" 
 #include "XYZIMU.h"
 #include "IMUData.h"
 #include "ConcretBeeperController.h"
-#include <Servo.h>
+#include "TransmissionService.h"
 
 #define SERVO_PIN 9
 #define SPEAKER_PIN 8
 #define NB_RECORD 5
 #define ROTATION 180
+#define TIME_BEFORE_DEPLOY 0
 
 File myFile;
 FillStorageService *fillStorage;
@@ -126,11 +127,10 @@ void setup() {
   fillStorage = new FillStorageService(myFile);
   
   /**************************************************************/
-  /************************** Le beepeur   **********************/
+  /********************** Le beepeur et Servo *******************/
   /**************************************************************/
   bip.ring();
   myServo.attach(SERVO_PIN);
-
 }
 
 void loop() {
@@ -203,6 +203,7 @@ void loop() {
       {
         Serial.println("fin !!!!");
         bip.ring();
+        delay(TIME_BEFORE_DEPLOY*1000);
         myServo.write(ROTATION);
         parachute = true;
       }
@@ -219,36 +220,19 @@ void loop() {
   /************************* Send Data *****************************/
   //  sendData(row)
   /************************* End Send Data *************************/
-  
-  /***************  Partie Permettant les tests  *******************/
-  //  Serial.println("Chaque XYZData");
-  //  Serial.println(acceleration->toChar());
-  //  Serial.println(gyro->toChar());
-  //  Serial.println(magnetic->toChar());
-  //  Serial.println("");
-  //  Serial.println("la pression");
-  //  Serial.println(pressure);
-  //  char pressureData[8];
-  //  dtostrf(pressure, 4, 2, pressureData);
-  //  Serial.println(pressureData);
-  //
-  //  Serial.println("");
-  //  Serial.println("Affiche tout");
-  //  Serial.println(data.toChar());
-  //  
-  //  Serial.println("fin");
     }
   }
   
 }
 
+/***********************  Addition de deux XYZData  ********************/
 void addValue(XYZData *data, XYZData *add)
 {
   data->setX(data->getX()+add->getX());
   data->setY(data->getY()+add->getY());
   data->setZ(data->getZ()+add->getZ());
 }
-
+/***********************  moyenne de XYZData  ********************/
 void averageValue(XYZData *data, int average)
 {
   data->setX(data->getX()/average);

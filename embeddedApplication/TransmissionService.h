@@ -1,5 +1,5 @@
-#ifndef PARACHUTECONTROLLER_H
-#define PARACHUTECONTROLLER_H
+#ifndef TRANSMISSIONSERVICE_H
+#define TRANSMISSIONSERVICE_H
 
 
 #include <Arduino.h>
@@ -7,7 +7,7 @@
 class TransmissionService
 {
   protected:
-  virtual void sendData();
+    virtual void sendData();
 };
 
 #endif

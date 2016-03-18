@@ -38,8 +38,9 @@ void ConcretBeeperController::errorOfSDCardRing()
 
 void ConcretBeeperController::errorOfSensorRing()
 {
-    int melody[] = {262, 196, 196};
-    int noteDurations[] = {2, 1, 2};
+  //262
+    int melody[] = {196, 196, 196};
+    int noteDurations[] = {4, 4, 4};
     
     while(1)
     {

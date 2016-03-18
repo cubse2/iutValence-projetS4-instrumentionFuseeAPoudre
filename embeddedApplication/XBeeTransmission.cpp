@@ -2,9 +2,7 @@
 
 
 
-
-void XBeeTransmission::sendData(data.toChar)
+void XBeeTransmission::sendData()
 {
-  Serial.println(data.toChar);
-  xbee.println(data.toChar);
+
 }
