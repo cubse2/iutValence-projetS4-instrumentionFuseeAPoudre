@@ -36,17 +36,18 @@ if (isset($_GET['action']) && $_GET['action'] == 'export_data'){
 
 $postFlightMonitor = new postFlightMonitor(new TimeStampedFileFlightDataStorage(new TimeStampedFileFlightDataReader()));
 
-$acceleration = $postFlightMonitor->createYAccelerationAndTimeTable();
-$accelerationLabels = implode(',',$acceleration['time']);
-$accelerationValues = implode(',',$acceleration['accelerationY']);
+$time = $postFlightMonitor->createTimeTable();
+$yAcceleration = $postFlightMonitor->createYAccelerationTable();
+$accelerationLabels = implode(',',$time);
+$accelerationValues = implode(',',$yAcceleration);
 
-$altitude = $postFlightMonitor->createAltitudeAndTimeTable();
-$altitudeLabels = implode(',',$altitude['time']);
-$altitudeValues = implode(',',$altitude['altitude']);
+$altitude = $postFlightMonitor->createAltitudeTable();
+$altitudeLabels = implode(',',$time);
+$altitudeValues = implode(',',$altitude);
 
-$velocity = $postFlightMonitor->createVelocityYAndTimeTable();
-$velocityLabels = implode(',',$velocity['time']);
-$velocityValues = implode(',',$velocity['velocityY']);
+$yVelocity = $postFlightMonitor->createYVelocityTable();
+$velocityLabels = implode(',',$time);
+$velocityValues = implode(',',$yVelocity);
 
 $path3D = $postFlightMonitor->createPosition();
 $path3DX = implode(',', $path3D['x']);
@@ -87,12 +88,12 @@ $path3DZ = implode(',', $path3D['z']);
                         </thead>
                         <tbody>
                             <?php
-                                for ($i = 0; $i < count($acceleration['time']); $i++){
+                                for ($i = 0; $i < count($time); $i++){
                                     echo "<tr>";
-                                    echo "<td>",$acceleration['time'][$i],"</td>";
-                                    echo "<td>",$velocity['velocityY'][$i],"</td>";
-                                    echo "<td>",$acceleration['accelerationY'][$i],"</td>";
-                                    echo "<td>",$altitude['altitude'][$i],"</td>";
+                                    echo "<td>",$time[$i],"</td>";
+                                    echo "<td>",$yVelocity[$i],"</td>";
+                                    echo "<td>",$yAcceleration[$i],"</td>";
+                                    echo "<td>",$altitude[$i],"</td>";
                                 }
                             ?>
                         </tbody>
