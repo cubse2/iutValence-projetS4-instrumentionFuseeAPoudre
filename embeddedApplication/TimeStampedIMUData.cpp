@@ -1,23 +1,40 @@
 #include "TimeStampedIMUData.h"
 
-TimeStampedIMUData::TimeStampedIMUData(XYZData acceleration, XYZData gyroscope,
-		XYZData magnetisme, float pressure, unsigned long time) :
-		IMUData(acceleration, gyroscope, magnetisme, pressure)
+TimeStampedIMUData::TimeStampedIMUData(unsigned long theTime, XYZData acceleration, XYZData gyroscope,
+		XYZData magnetisme, float altitude) :
+		IMUData(acceleration, gyroscope, magnetisme, altitude)
 {
-	this->timestamp = time;
+	this->timestamp = theTime;
+}
+
+void TimeStampedIMUData::setTimestamp(unsigned long theTime)
+{
+  this->timestamp = theTime;
+}
+
+void TimeStampedIMUData::setTimeStampedIMUData(unsigned long theTime, XYZData *accelerationData, XYZData *gyroscopeData, 
+      XYZData *magnetismData, float altitude)
+{
+  setTimestamp(theTime);
+  setAcceleration(accelerationData);
+  setGyroscope(gyroscopeData);
+  setMagnetism(magnetismData);
+  setAltitude(altitude);
 }
 
 char* TimeStampedIMUData::toChar()
 {
-	char timeStampedIMUData[78];
-	char timeChar[6];	// TODO : to check !!!
+	char timeStampedIMUData[150];
+	char timeData[20];
+  dtostrf(timestamp, 4, 2, timeData);
+  char altitudeData[10];
+  dtostrf(altitude, 4, 2, altitudeData);
 
-	sprintf(timeChar, "%f;", timestamp); //TODO : link with IMUData, more short?
-
-	strcpy(timeStampedIMUData, acceleration.toChar());
+  strcpy(timeStampedIMUData, timeData);
+	strcat(timeStampedIMUData, acceleration.toChar());
 	strcat(timeStampedIMUData, gyroscope.toChar());
 	strcat(timeStampedIMUData, magnetism.toChar());
-	strcat(timeChar, timeStampedIMUData);
+  strcat(imuData, altitudeData);
 
 	return timeStampedIMUData;
 };

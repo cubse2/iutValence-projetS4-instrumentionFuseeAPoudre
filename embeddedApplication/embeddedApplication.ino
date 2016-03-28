@@ -9,9 +9,10 @@
 #include <Servo.h>
 #include "FillStorageservice.h" 
 #include "XYZIMU.h"
-#include "IMUData.h"
 #include "ConcretBeeperController.h"
 #include "TransmissionService.h"
+#include "IMUData.h"
+#include "timeStampedIMUData"
 
 #define SERVO_PIN 9
 #define SPEAKER_PIN 8
@@ -30,6 +31,7 @@ bool parachute = false;
 float altitudeMin = 0;
 float altitudeMax = 0;
 float altitudeData = 0;
+unsigned long theTime = 0;
 XYZData *accelerationData = new XYZData();
 XYZData *gyroscopData = new XYZData();
 XYZData *magneticData = new XYZData();
@@ -38,8 +40,8 @@ XYZIMU imu = XYZIMU();
 XYZData *recordAcceleration = new XYZData();
 XYZData *recordGyroscop = new XYZData();
 XYZData *recordMagnetic = new XYZData();
-IMUData data(accelerationData, gyroscopData, magneticData,0.0f);
-
+//IMUData data(accelerationData, gyroscopData, magneticData,0.0f);
+TimeStampedIMUData data(0, accelerationData, gyroscopData, magneticData,0.0f);
 
 void setup() {
   
@@ -185,9 +187,13 @@ void loop() {
       averageValue(gyroscopData, NB_RECORD);
       averageValue(magneticData, NB_RECORD);
       altitudeData = altitudeData / NB_RECORD;
-    
+
+      theTime = millis();
       // tout dans le IMUData data
-      data.setIMUData(accelerationData, gyroscopData, magneticData, altitudeData);
+      
+      //data.setIMUData(accelerationData, gyroscopData, magneticData, altitudeData);
+  
+      data.setTimeStampedIMUData(theTime,accelerationData, gyroscopData, magneticData, altitudeData)
       Serial.println(data.toChar());
       //Serial.println(altitudeData);
   

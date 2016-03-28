@@ -12,8 +12,11 @@ class TimeStampedIMUData : public IMUData
     unsigned long timestamp;
     
   public:
-    TimeStampedIMUData(XYZData acceleration, XYZData gyroscope,
-    		XYZData magnetisme, float pressure, unsigned long time):IMUData(acceleration, gyroscope, magnetisme, pressure);
+    TimeStampedIMUData(unsigned long theTime, XYZData acceleration, XYZData gyroscope,
+    		XYZData magnetisme, float altitude):IMUData(acceleration, gyroscope, magnetisme, altitude);
+    void setTimestamp(unsigned long theTime);
+    void setTimeStampedIMUData(unsigned long theTime, XYZData *accelerationData, XYZData *gyroscopeData, 
+      XYZData *magnetismData, float altitude);
     char* toChar();
 };
 
