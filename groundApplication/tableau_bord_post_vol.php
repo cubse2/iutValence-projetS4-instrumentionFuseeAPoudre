@@ -72,18 +72,19 @@ $path3DZ = implode ( ',', $path3D ['z'] );
 <link rel="stylesheet" type="text/css" href="css/knacss.css">
 <link rel="stylesheet" type="text/css" href="css/my_style.css">
 <script src="js/jquery-1.12.2.min.js"></script>
+<script src="js/jquery.fullscreen-min.js"></script>
 <script src="js/Chart.min.js"></script>
 </head>
 <body class='tableau-bord'>
 	<a href='chargement_donnees.php' class='button w100p'>Retour</a>
 	<div class="grid-2">
 		<div class="window flex-item-double">
-			<div class='grid-4-1'>
-				<span class="">Données Chargées</span> <span class=""><a
+			<div class='grid-3-1'>
+				<span class="opposite-button">Données Chargées</span> <span class="txtcenter"><a
 					href="tableau_bord_post_vol.php?action=export_data" class="button">Exporter
 						les données</a></span>
 			</div>
-			<div style="max-height: 300px; overflow-y: auto">
+			<div style="max-height: 300px; overflow-y: auto" class="graph-table">
 				<table>
 					<thead>
 						<tr>
@@ -109,31 +110,31 @@ $path3DZ = implode ( ',', $path3D ['z'] );
 		</div>
 		<div class="window">
 			<div class='grid-3-1'>
-				<span class="">Trajectoire 3D</span> <span class=""><a href="#"
-					class="button">Agrandir</a></span>
-				<div class="flex-item-double" id="path"></div>
+				<span class="opposite-button">Trajectoire 3D</span> <span class=""><button
+					class="button" onclick='$("#path").fullScreen(true)'>Agrandir</button></span>
+				<div class="flex-item-double graph-table" id="path"></div>
 			</div>
 		</div>
 		<div class="window">
 			<div class='grid-3-1'>
-				<span class="">Altitude en fonction du temps</span> <span class=""><a
-					href="#" class="button">Agrandir</a></span>
-				<canvas class="flex-item-double" id="altitude"></canvas>
+				<span class="opposite-button">Altitude en fonction du temps</span> <span class=""><button
+					class="button" onclick='$("#altitude").fullScreen(true)'>Agrandir</button></span>
+				<canvas class="flex-item-double graph-table" id="altitude"></canvas>
 			</div>
 		</div>
 		<div class="window">
 			<div class='grid-3-1'>
-				<span class="">Accélération axe Y en fonction du temps</span> <span
-					class=""><a href="#" class="button">Agrandir</a></span>
+				<span class="opposite-button">Accélération axe Y en fonction du temps</span> <span
+					class=""><button class="button" onclick='$("#acceleration").fullScreen(true)'>Agrandir</button></span>
 
-				<canvas class="flex-item-double" id="acceleration"></canvas>
+				<canvas class="flex-item-double graph-table" id="acceleration"></canvas>
 			</div>
 		</div>
 		<div class="window">
 			<div class='grid-3-1'>
-				<span class="">Vitesse axe Y en fonction du temps</span> <span
-					class=""><a href="#" class="button">Agrandir</a></span>
-				<canvas class="flex-item-double" id="velocity"></canvas>
+				<span class="opposite-button">Vitesse axe Y en fonction du temps</span> <span
+					class=""><button class="button" onclick='$("#velocity").fullScreen(true)'>Agrandir</button></span>
+				<canvas class="flex-item-double graph-table" id="velocity"></canvas>
 			</div>
 		</div>
 	</div>

@@ -130,3 +130,12 @@ input[type="submit"] {
 .error {
     color: red;
 }
+
+.opposite-button {
+	padding: 13px 0px;
+}
+
+.graph-table {
+	margin: 20px;
+	padding: 0px 5px;
+}
