@@ -34,10 +34,10 @@ if(isset($_POST['submit'])){
               content="Extrait les donnéesdu fichier généré par l'application embarqué">
         <meta charset="UTF-8">
         <meta name="author" content="Baptiste Thevenet">
-        <link rel="stylesheet" type="text/css" href="skeleton.css">
-        <link rel="stylesheet" type="text/css" href="knacss.css">
-        <link rel="stylesheet" type="text/css" href="my_style.css">
-        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/skeleton.css">
+        <link rel="stylesheet" type="text/css" href="css/knacss.css">
+        <link rel="stylesheet" type="text/css" href="css/my_style.css">
+        <script src=""js/jquery-1.12.2.min.js""></script>
     </head>
     <body>
         <div class="main small-w100">
@@ -69,5 +69,5 @@ if(isset($_POST['submit'])){
         </div>
     </body>
 </html>
-<script src="myScript.js"></script>
+<script src="js/myScript.js"></script>
 

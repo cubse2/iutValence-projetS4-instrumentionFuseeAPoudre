@@ -9,10 +9,10 @@ $temps = $vitesse = $acceleration = $altitude = 0;
         <meta name="description" content="Affichage des données en temps réel">
         <meta charset="UTF-8">
         <meta name="author" content="Baptiste Thevenet">
-        <link rel="stylesheet" type="text/css" href="skeleton.css">
-        <link rel="stylesheet" type="text/css" href="knacss.css">
-        <link rel="stylesheet" type="text/css" href="my_style.css">
-        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/skeleton.css">
+        <link rel="stylesheet" type="text/css" href="css/knacss.css">
+        <link rel="stylesheet" type="text/css" href="css/my_style.css">
+        <script src="js/jquery-1.12.2.min.js"></script>
     </head>
     <body class='tableau-bord'>
         <a href='connexion_arduino.php' class='button w100p'>Retour</a>
