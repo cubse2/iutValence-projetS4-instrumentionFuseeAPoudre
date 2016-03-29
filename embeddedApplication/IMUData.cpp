@@ -39,7 +39,7 @@ char* IMUData::toChar()
 {
 	char imuData[150]; 
 	char altitudeData[8];
-  dtostrf(altitude, 4, 2, altitudeData);
+        dtostrf(altitude, 4, 2, altitudeData);
 
 	strcpy(imuData, acceleration->toChar());
 	strcat(imuData, gyroscope->toChar());

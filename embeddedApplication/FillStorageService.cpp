@@ -5,7 +5,12 @@ FillStorageService::FillStorageService(File file)
 	this->myFile = file;
 };
 
-bool FillStorageService::saveData(char* data)
+void FillStorageService::saveData(char* data)
 {
-	myFile.println(data);
+  myFile.println(data);
+};
+
+void FillStorageService::closeFile()
+{
+  myFile.close();
 };

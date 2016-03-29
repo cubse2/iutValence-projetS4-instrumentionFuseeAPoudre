@@ -5,12 +5,13 @@
 
 class IMUData
 {
-  private:
- 
+  protected:
     float altitude;
     XYZData *acceleration;
     XYZData *gyroscope;
     XYZData *magnetism;
+    
+  private:
     
   public:
     IMUData(XYZData *acceleration, XYZData *gyroscope, 

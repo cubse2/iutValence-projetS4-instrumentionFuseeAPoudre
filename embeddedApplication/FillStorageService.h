@@ -10,8 +10,9 @@ class FillStorageService : public StorageService
 	private:
 		File myFile;
 	public:
-		bool saveData(char* data);
 		FillStorageService(File file);
+                void saveData(char* data);
+                void closeFile();
 };
 
 #endif

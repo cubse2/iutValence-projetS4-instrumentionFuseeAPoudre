@@ -11,8 +11,8 @@
 #include "XYZIMU.h"
 #include "ConcretBeeperController.h"
 #include "TransmissionService.h"
-#include "IMUData.h"
-#include "timeStampedIMUData"
+//#include "IMUData.h"
+#include "TimeStampedIMUData.h"
 
 #define SERVO_PIN 9
 #define SPEAKER_PIN 8
@@ -31,7 +31,7 @@ bool parachute = false;
 float altitudeMin = 0;
 float altitudeMax = 0;
 float altitudeData = 0;
-unsigned long theTime = 0;
+unsigned long theTime = millis();
 XYZData *accelerationData = new XYZData();
 XYZData *gyroscopData = new XYZData();
 XYZData *magneticData = new XYZData();
@@ -41,7 +41,8 @@ XYZData *recordAcceleration = new XYZData();
 XYZData *recordGyroscop = new XYZData();
 XYZData *recordMagnetic = new XYZData();
 //IMUData data(accelerationData, gyroscopData, magneticData,0.0f);
-TimeStampedIMUData data(0, accelerationData, gyroscopData, magneticData,0.0f);
+TimeStampedIMUData data(theTime, accelerationData, gyroscopData, magneticData,0.0f);
+
 
 void setup() {
   
@@ -193,7 +194,7 @@ void loop() {
       
       //data.setIMUData(accelerationData, gyroscopData, magneticData, altitudeData);
   
-      data.setTimeStampedIMUData(theTime,accelerationData, gyroscopData, magneticData, altitudeData)
+      data.setTimeStampedIMUData(theTime,accelerationData, gyroscopData, magneticData, altitudeData);
       Serial.println(data.toChar());
       //Serial.println(altitudeData);
   
@@ -218,6 +219,17 @@ void loop() {
   /************************* Save Data *************************/
   
       fillStorage->saveData(data.toChar());
+      
+      
+      if (parachute)//parachute activate
+      {
+        if (altitudeMin-0.5 < altitudeData < altitudeMin+0.5)
+        {
+          Serial.println("close file");
+          fillStorage->closeFile();
+        }
+        altitudeMin = altitudeData;
+      }
       
 
   /************************* End Save Data *************************/
