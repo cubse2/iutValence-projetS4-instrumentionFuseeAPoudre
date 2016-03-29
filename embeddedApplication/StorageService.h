@@ -6,7 +6,7 @@
 class StorageService
 {
 	protected:
-		virtual bool saveData(char* data);
+		virtual void saveData(char* data);
 };
 
 #endif

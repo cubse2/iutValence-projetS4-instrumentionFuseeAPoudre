@@ -26,7 +26,7 @@ char* TimeStampedIMUData::toChar()
 {
   char timeStampedIMUData[150];
   char timeData[20];
-  dtostrf(timestamp, 10, 0, timeData);
+  dtostrf(timestamp, 4, 0, timeData);
   char altitudeData[10];
   dtostrf(altitude, 4, 2, altitudeData);
 

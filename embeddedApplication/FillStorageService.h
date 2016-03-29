@@ -12,7 +12,6 @@ class FillStorageService : public StorageService
 	public:
 		FillStorageService(File file);
                 void saveData(char* data);
-                void closeFile();
 };
 
 #endif

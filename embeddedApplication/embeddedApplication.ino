@@ -10,24 +10,29 @@
 #include "FillStorageservice.h" 
 #include "XYZIMU.h"
 #include "ConcretBeeperController.h"
-#include "TransmissionService.h"
 //#include "IMUData.h"
 #include "TimeStampedIMUData.h"
 
-#define SERVO_PIN 9
-#define SPEAKER_PIN 8
-#define NB_RECORD 5
-#define ROTATION 180
-#define TIME_BEFORE_DEPLOY 0
+
+/*Toutes les valeurs sont strictement positif*/
+#define SERVO_PIN 9     // pin du servomoteur
+#define SPEAKER_PIN 8   // pin du speaker
+#define NB_RECORD 5     // nombre d'échantillons pris pour faire une moyenne
+#define ROTATION 180    // angle de rotation du servomoteur
+#define TIME_BEFORE_DEPLOY 5 // temps avant le déploiment du parachute
+#define FALL_DISTANCE 2 // distance de chute minimum après le déploiment du parachute
+
 
 File myFile;
 FillStorageService *fillStorage;
 Servo myServo;
 ConcretBeeperController bip = ConcretBeeperController(SPEAKER_PIN);
 
+/*Booleen pour les etats*/
 bool parachute = false;
+bool parachuteOpen = false;
+bool endRecord = false;
 
-//IMUData imuData;
 float altitudeMin = 0;
 float altitudeMax = 0;
 float altitudeData = 0;
@@ -138,6 +143,7 @@ void setup() {
 
 void loop() {
   
+  /******************** Détection du décolage *******************/  
   imu.getAccelerationData(accelerationData);
   imu.getGyroscopeData(gyroscopData);
   imu.getMagnetismData(magneticData);
@@ -145,12 +151,12 @@ void loop() {
   Serial.println("-------------------");
   Serial.println(altitudeData);
   
-  for(int nbOfRecord = 1; nbOfRecord < 10 ; nbOfRecord++)
+  for(int nbOfRecord = 1; nbOfRecord < 20 ; nbOfRecord++)
   {
     altitudeData = altitudeData + imu.getBarometerData();
   }
   
-  altitudeData = altitudeData/10;
+  altitudeData = altitudeData/20;
   
   if(altitudeMin == 0)
   {
@@ -160,87 +166,138 @@ void loop() {
   Serial.println(altitudeData);
   Serial.println("-------------------");
   
-  /************************* Record *************************/
-  
   if(altitudeData > altitudeMin + 1)
   {
-    Serial.println("OK !!!!!");
-    bip.ring();
-    while(1)
+  /************************ Montée ******************************/  
+    rising();
+  /************************* Parachute **************************/  
+    parachuteActivation();
+  /****************** Distance de chute minimum *****************/  
+    fall();
+  /********************* Fin d'enregistrement *******************/  
+    landing();
+    
+    while(1);
     {
-      imu.getAccelerationData(accelerationData);
-      imu.getGyroscopeData(gyroscopData);
-      imu.getMagnetismData(magneticData);
-      altitudeData = imu.getBarometerData();
-      
-      for(int nbOfRecord = 1; nbOfRecord < NB_RECORD; nbOfRecord++)
-      {
-        imu.getAccelerationData(recordAcceleration);
-        imu.getGyroscopeData(recordGyroscop);
-        imu.getMagnetismData(recordMagnetic);
-        addValue(accelerationData, recordAcceleration);
-        addValue(gyroscopData, recordGyroscop);
-        addValue(magneticData, recordMagnetic);
-        altitudeData = altitudeData + imu.getBarometerData();
-      }
-
-      averageValue(accelerationData, NB_RECORD);
-      averageValue(gyroscopData, NB_RECORD);
-      averageValue(magneticData, NB_RECORD);
-      altitudeData = altitudeData / NB_RECORD;
-
-      theTime = millis();
-      // tout dans le IMUData data
-      
-      //data.setIMUData(accelerationData, gyroscopData, magneticData, altitudeData);
-  
-      data.setTimeStampedIMUData(theTime,accelerationData, gyroscopData, magneticData, altitudeData);
-      Serial.println(data.toChar());
-      //Serial.println(altitudeData);
-  
-
-  /************************* Parachute *************************/
-  
-      if(altitudeData > altitudeMax)
-      {
-        altitudeMax = altitudeData;
-      }
-      else 
-      if(altitudeMax - altitudeData > 1 && parachute == false)
-      {
-        Serial.println("fin !!!!");
-        bip.ring();
-        delay(TIME_BEFORE_DEPLOY*1000);
-        myServo.write(ROTATION);
-        parachute = true;
-      }
-  /************************* End Parachute *************************/
-  
-  /************************* Save Data *************************/
-  
-      fillStorage->saveData(data.toChar());
-      
-      
-      if (parachute)//parachute activate
-      {
-        if (altitudeMin-0.5 < altitudeData < altitudeMin+0.5)
-        {
-          Serial.println("close file");
-          fillStorage->closeFile();
-        }
-        altitudeMin = altitudeData;
-      }
-      
-
-  /************************* End Save Data *************************/
-  
-  
-  /************************* Send Data *****************************/
-  //  sendData(row)
-  /************************* End Send Data *************************/
+      Serial.println("Fin");
+      delay(10000);
     }
   }
   
+}
+
+/*********************************************************************************/
+/******************************* Les différents états ****************************/
+/*********************************************************************************/
+/* 1ere etape */
+void rising()
+{
+  Serial.println("1ere");
+  while(parachute == false)
+  {    
+    recording();
+     
+    if(altitudeData > altitudeMax)
+    {
+      altitudeMax = altitudeData;
+    }
+    else 
+    if(altitudeMax - altitudeData > 1)
+    {
+      parachute = true;
+    }
+  }
+}
+
+/* 2eme etape */
+void parachuteActivation()
+{
+  Serial.println("2eme");
+  int timeOnTheTop = millis();
+  int timeParachute = millis();
+  
+  while(timeOnTheTop - timeParachute <= TIME_BEFORE_DEPLOY*1000)
+  {  
+    recording();
+    timeOnTheTop = millis();
+  }
+  myServo.write(ROTATION); // Activation du parachute
+}
+
+/* 3eme etape */
+void fall()
+{
+  Serial.println("3eme");
+  if(FALL_DISTANCE != 0)
+  {
+    while(altitudeMax-altitudeData <= FALL_DISTANCE)
+    {
+      recording();
+      Serial.println(altitudeMax-altitudeData);
+    }
+  }
+}
+
+/* 4eme etape */
+void landing()
+{
+  int nbOfRecord = 0;
+  int alti = 0;
+  Serial.println("4eme");
+  while(endRecord == false)
+  { 
+    recording();
+    if (nbOfRecord == 10)
+    {
+      if(alti+0.1 <= altitudeMin <= alti+0.1)
+      {
+        Serial.println("close file");
+        myFile.close();
+        endRecord = true;
+      }
+    }
+    else
+    {
+      nbOfRecord = nbOfRecord+1;
+      alti = alti + altitudeData;
+    }
+    altitudeMin = altitudeData;
+  }
+}
+
+/***********************  Echantillonage et Enregistrement des données  ********************/
+void recording()
+{
+  imu.getAccelerationData(accelerationData);
+  imu.getGyroscopeData(gyroscopData);
+  imu.getMagnetismData(magneticData);
+  altitudeData = imu.getBarometerData();
+  
+  for(int nbOfRecord = 1; nbOfRecord < NB_RECORD; nbOfRecord++)
+  {
+    imu.getAccelerationData(recordAcceleration);
+    imu.getGyroscopeData(recordGyroscop);
+    imu.getMagnetismData(recordMagnetic);
+    addValue(accelerationData, recordAcceleration);
+    addValue(gyroscopData, recordGyroscop);
+    addValue(magneticData, recordMagnetic);
+    altitudeData = altitudeData + imu.getBarometerData();
+  }
+  
+  averageValue(accelerationData, NB_RECORD);
+  averageValue(gyroscopData, NB_RECORD);
+  averageValue(magneticData, NB_RECORD);
+  altitudeData = altitudeData / NB_RECORD;
+  
+  theTime = millis();
+  
+  //data.setIMUData(accelerationData, gyroscopData, magneticData, altitudeData);
+  data.setTimeStampedIMUData(theTime,accelerationData, gyroscopData, magneticData, altitudeData);
+  
+  //Enregistrement
+  fillStorage->saveData(data.toChar());
+  
+  Serial.println(data.toChar());
 }
 
 /***********************  Addition de deux XYZData  ********************/

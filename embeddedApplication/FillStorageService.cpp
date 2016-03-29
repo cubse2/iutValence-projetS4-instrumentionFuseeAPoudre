@@ -10,7 +10,3 @@ void FillStorageService::saveData(char* data)
   myFile.println(data);
 };
 
-void FillStorageService::closeFile()
-{
-  myFile.close();
-};
