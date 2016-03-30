@@ -13,18 +13,19 @@ class postFlightMonitor {
     
     public function createTimeTable(){
         $timeTable = array();
+        $timeStampStart = $this->flightDataStorage->timeStampedFlightDataSampleTable[0]->getTimestamp();
         foreach ($this->flightDataStorage->timeStampedFlightDataSampleTable as $flightDataSample){
-            $timeTable[] = $flightDataSample->getTimestamp();
+            $timeTable[] = $flightDataSample->getTimestamp()-$timeStampStart;
         }
         return $timeTable;
     }
     
-    public function createYAccelerationTable(){
-        $yAcceleration = array();
+    public function createZAccelerationTable(){
+        $zAcceleration = array();
         foreach($this->flightDataStorage->timeStampedFlightDataSampleTable as $flightDataSample){
-            $yAcceleration[] =  $flightDataSample->getAccelerationY();
+            $zAcceleration[] =  $flightDataSample->getAccelerationZ();
         }
-        return $yAcceleration;
+        return $zAcceleration;
     }
     
     public function createYVelocityTable(){
@@ -66,7 +67,7 @@ class postFlightMonitor {
     
     public function createZVelocityTable(){
         $zVelocity = array();
-        $prevXVelocityValue = 0;
+        $prevZVelocityValue = 0;
         $prevTimeValue = 0;
         foreach($this->flightDataStorage->timeStampedFlightDataSampleTable as $flightDataSample){
             $newZVelocity = $prevZVelocityValue + $flightDataSample->getAccelerationZ() * ($flightDataSample->getTimestamp() - $prevTimeValue);
@@ -111,7 +112,7 @@ class postFlightMonitor {
     public function createZPosition(){
         $zPosition = array();
         $time = $this->createTimeTable();
-        $zVelocity = $this->createYVelocityTable();
+        $zVelocity = $this->createZVelocityTable();
         $prevZPositionValue = 0;
         $prevTimeValue = 0;
         for ($i = 0; $i < count($zVelocity); $i++){

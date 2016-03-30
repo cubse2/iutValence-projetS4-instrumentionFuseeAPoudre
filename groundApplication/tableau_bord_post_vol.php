@@ -11,22 +11,23 @@ function exportToCsv() {
 	header ( 'Pragma: public' );
 	
 	$postFlightMonitor = new postFlightMonitor ( new TimeStampedFileFlightDataStorage ( new TimeStampedFileFlightDataReader () ) );
-	$altitude = $postFlightMonitor->createAltitudeAndTimeTable ();
-	$velocity = $postFlightMonitor->createVelocityYAndTimeTable ();
-	$acceleration = $postFlightMonitor->createYAccelerationAndTimeTable ();
+    $time = $postFlightMonitor->createTimeTable();
+	$altitude = $postFlightMonitor->createAltitudeTable();
+	$velocity = $postFlightMonitor->createZVelocityTable();
+	$acceleration = $postFlightMonitor->createZAccelerationTable();
 	$file = fopen ( PATH_EXPORTED_FILE, 'w' );
 	fputcsv ( $file, array (
 			'temps',
-			'acceleration axe Y',
-			'vitesse axe Y',
+			'acceleration axe Z',
+			'vitesse axe Z',
 			'altitude' 
 	), ';' );
-	for($i = 0; $i < count ( $altitude ['time'] ); $i ++) {
+	for($i = 0; $i < count ($time); $i ++) {
 		fputcsv ( $file, array (
-				$altitude ['time'] [$i],
-				$acceleration ['accelerationY'] [$i],
-				$velocity ['velocityY'] [$i],
-				$altitude ['altitude'] [$i] 
+				$time[$i],
+				$acceleration[$i],
+				$velocity[$i],
+				$altitude[$i] 
 		), ';' );
 	}
 	fclose ( $file );
@@ -43,17 +44,17 @@ if (isset ( $_GET ['action'] ) && $_GET ['action'] == 'export_data') {
 $postFlightMonitor = new postFlightMonitor ( new TimeStampedFileFlightDataStorage ( new TimeStampedFileFlightDataReader () ) );
 
 $time = $postFlightMonitor->createTimeTable ();
-$yAcceleration = $postFlightMonitor->createYAccelerationTable ();
+$zAcceleration = $postFlightMonitor->createZAccelerationTable ();
 $accelerationLabels = implode ( ',', $time );
-$accelerationValues = implode ( ',', $yAcceleration );
+$accelerationValues = implode ( ',', $zAcceleration );
 
 $altitude = $postFlightMonitor->createAltitudeTable ();
 $altitudeLabels = implode ( ',', $time );
 $altitudeValues = implode ( ',', $altitude );
 
-$yVelocity = $postFlightMonitor->createYVelocityTable ();
+$zVelocity = $postFlightMonitor->createZVelocityTable ();
 $velocityLabels = implode ( ',', $time );
-$velocityValues = implode ( ',', $yVelocity );
+$velocityValues = implode ( ',', $zVelocity );
 
 $path3D = $postFlightMonitor->createPosition ();
 $path3DX = implode ( ',', $path3D ['x'] );
@@ -88,10 +89,10 @@ $path3DZ = implode ( ',', $path3D ['z'] );
 				<table>
 					<thead>
 						<tr>
-							<th>Temps</th>
-							<th>Vitesse axe Y</th>
-							<th>Accélération axe Y</th>
-							<th>Altitude</th>
+							<th>Temps (en ms)</th>
+							<th>Vitesse axe Z</th>
+							<th>Accélération axe Z</th>
+							<th>Altitude (en m)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -99,8 +100,8 @@ $path3DZ = implode ( ',', $path3D ['z'] );
 						for($i = 0; $i < count ( $time ); $i ++) {
 							echo "<tr>";
 							echo "<td>", $time [$i], "</td>";
-							echo "<td>", $yVelocity [$i], "</td>";
-							echo "<td>", $yAcceleration [$i], "</td>";
+							echo "<td>", $zVelocity [$i], "</td>";
+							echo "<td>", $zAcceleration [$i], "</td>";
 							echo "<td>", $altitude [$i], "</td>";
 						}
 						?>
@@ -124,7 +125,7 @@ $path3DZ = implode ( ',', $path3D ['z'] );
 		</div>
 		<div class="window">
 			<div class='grid-3-1'>
-				<span class="opposite-button">Accélération axe Y en fonction du temps</span> <span
+				<span class="opposite-button">Accélération axe Z en fonction du temps</span> <span
 					class=""><button class="button" onclick='$("#acceleration").fullScreen(true)'>Agrandir</button></span>
 
 				<canvas class="flex-item-double graph-table" id="acceleration"></canvas>
@@ -132,7 +133,7 @@ $path3DZ = implode ( ',', $path3D ['z'] );
 		</div>
 		<div class="window">
 			<div class='grid-3-1'>
-				<span class="opposite-button">Vitesse axe Y en fonction du temps</span> <span
+				<span class="opposite-button">Vitesse axe Z en fonction du temps</span> <span
 					class=""><button class="button" onclick='$("#velocity").fullScreen(true)'>Agrandir</button></span>
 				<canvas class="flex-item-double graph-table" id="velocity"></canvas>
 			</div>
@@ -142,7 +143,7 @@ $path3DZ = implode ( ',', $path3D ['z'] );
 </html>
 <!--<script src="myScript.js"></script>-->
 <script type="text/javascript"
-	src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	src="js/plotly-latest.min.js"></script>
 <script>
     Chart.types.Line.extend({
         name: "LineAlt",
