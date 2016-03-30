@@ -21,6 +21,5 @@ CS - pin 4 (CS pin can be changed) and pin #52 (SS) must be an output
  et inversement. Si la valeur est faible, il y aura bien plus de valeur mais la precision sera faible.*/
 #define ROTATION 180            // angle de rotation du servomoteur superieur a 0
 
-#define INITIALIZATION true     // 'true' si on veut effectuer la premiere etape, 'false' sinon
 #define TIME_BEFORE_DEPLOY 0    // temps avant le déploiment du parachute (en seconde) de 0 à 25 seconde
 #define FALL_DISTANCE 1         // distance de chute minimum après le déploiment du parachute (en metre) superieur a 0

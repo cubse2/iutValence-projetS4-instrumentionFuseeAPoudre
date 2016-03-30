@@ -30,7 +30,7 @@ void checkOfConst()
 /* Verifie si les capteurs fonctionnent */
 void checkDOF()
 {
-    Serial.println(F("Adafruit 10DOF Tester")); 
+  Serial.println(F("Adafruit 10DOF Tester")); 
   Serial.println("");
   
   /* Initialise the sensors */

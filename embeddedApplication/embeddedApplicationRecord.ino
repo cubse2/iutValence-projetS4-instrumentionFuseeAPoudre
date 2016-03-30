@@ -24,7 +24,6 @@ void recording()
   
   theTime = millis();
   
-  //data.setIMUData(accelerationData, gyroscopData, magneticData, altitudeData);
   data.setTimeStampedIMUData(theTime,accelerationData, gyroscopData, magneticData, altitudeData);
   
   //Enregistrement

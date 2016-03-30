@@ -74,10 +74,7 @@ void setup() {
 void loop() 
 {
   /******************** Détection du décolage *******************/  
-  if (INITIALIZATION)
-  {
-    initialization();
-  }
+  initialization();
   
   //Si on monte
   if(altitudeData > altitudeMin + 1)
