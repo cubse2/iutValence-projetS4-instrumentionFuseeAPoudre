@@ -76,13 +76,6 @@ void checkSDCard()
   }
   Serial.println("initialization done.");
   
-  /*Espace memoire*/   // A revoir
-  //uint32_t volumesize;
-  //volumesize = volume.blocksPerCluster();    // clusters are collections of blocks
-  //volumesize *= volume.clusterCount();       // we'll have a lot of clusters
-  //volumesize *= 512;                         // SD card blocks are always 512 bytes
-  
-  
   /*Si le fichier existe deja*/
   if (SD.exists("flight.txt"))
   { 

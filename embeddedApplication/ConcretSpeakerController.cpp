@@ -127,18 +127,14 @@ void ConcretSpeakerController::ringOfEnd()
 
 void ConcretSpeakerController::errorOfSDCardRing()
 {
-    int melody[] = {262, 196};
+    int notes[] = {NOTE_C4, NOTE_G3};
     int noteDurations[] = {2, 1};
     
     while(1)
     {
-      for(int note = 0; note < sizeof(melody); note++ )
+      for(int melody = 0; melody < sizeof(notes); melody++)
       {
-        int noteDuration = 1000 / noteDurations[note];
-        tone(speakerPin, melody[note], noteDuration);
-        int pauseBetweenNotes = noteDuration * 1.30;
-        delay(pauseBetweenNotes);
-        noTone(speakerPin);
+        ring(notes[melody], noteDurations[melody]);
       }
       delay(10000);
     }
@@ -146,19 +142,14 @@ void ConcretSpeakerController::errorOfSDCardRing()
 
 void ConcretSpeakerController::errorOfSensorRing()
 {
-  //262
-    int melody[] = {196, 196, 196};
+    int notes[] = {NOTE_G3, NOTE_G3, NOTE_G3};
     int noteDurations[] = {4, 4, 4};
     
     while(1)
     {
-      for(int note = 0; note < sizeof(melody); note++ )
+      for(int melody = 0; melody < sizeof(notes); melody++)
       {
-        int noteDuration = 1000 / noteDurations[note];
-        tone(speakerPin, melody[note], noteDuration);
-        int pauseBetweenNotes = noteDuration * 1.30;
-        delay(pauseBetweenNotes);
-        noTone(speakerPin);
+        ring(notes[melody], noteDurations[melody]);
       }
       delay(10000);
     }

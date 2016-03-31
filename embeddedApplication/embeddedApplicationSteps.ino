@@ -4,8 +4,8 @@
 /* Initialisation, ou la partie detection de mouvement*/
 void initialization()
 {
-  int toRing = 0;
   Serial.println("init");
+  int toRing = 0;
   imu.getAccelerationData(accelerationData);
   imu.getGyroscopeData(gyroscopData);
   imu.getMagnetismData(magneticData);

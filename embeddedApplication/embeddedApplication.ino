@@ -77,7 +77,7 @@ void loop()
   initialization();
   
   //Si on monte
-  if(altitudeData > altitudeMin + 1)
+  if(altitudeData > altitudeMin + 1.5)
   {
   /************************ Montée ******************************/  
     rising();
