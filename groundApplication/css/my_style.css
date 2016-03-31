@@ -1,0 +1,141 @@
+/*
+Copyright (C) 2016 thevenba
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/* 
+    Created on : 12 janv. 2016, 11:58:58
+    Author     : thevenba
+*/
+html {
+    display: table;
+    table-layout: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    display: table-cell;
+    height: 100%;
+    width: 100%;
+    vertical-align: middle;
+    background: url("../img/background.jpg") no-repeat fixed center/150% auto;
+    font-family: georgia, "trebuchet ms", arial, serif;
+}
+
+.tableau-bord {
+    vertical-align: initial;
+    padding: 20px;
+}
+
+.main {
+    background-color: rgba(0, 0, 0, .6);
+    width: 500px;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 60px;
+    color: white;
+}
+
+h1 {
+    color: #ffffff;
+}
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+}
+
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity = 0);
+}
+
+.input-group {
+    position: relative;
+    display: table;
+    border-collapse: separate;
+    margin-bottom: 22px;
+}
+
+.input-group-addon:first-child {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group-addon {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.input-group .form-control:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-control {
+    width: 100%;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+}
+
+.form-control[disabled] {
+    background-color: #eee;
+    opacity: 1;
+}
+
+.floppy-open {
+    background: url(../img/glyphicons-448-floppy-open.png) no-repeat;
+    background-size: 100%;
+}
+
+input[type="submit"] {
+    border: transparent;
+}
+
+.window {
+    background-color: white;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.error {
+    color: red;
+}
+
+.opposite-button {
+	padding: 13px 0px;
+}
+
+.graph-table {
+	margin: 20px;
+	padding: 0px 5px;
+}
