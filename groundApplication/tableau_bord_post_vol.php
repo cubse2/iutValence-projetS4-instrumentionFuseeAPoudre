@@ -17,10 +17,10 @@ function exportToCsv() {
 	$acceleration = $postFlightMonitor->createZAccelerationTable();
 	$file = fopen ( PATH_EXPORTED_FILE, 'w' );
 	fputcsv ( $file, array (
-			'temps',
-			'acceleration axe Z',
-			'vitesse axe Z',
-			'altitude' 
+			'temps (s)',
+			'acceleration axe Z (m/s²)',
+			'vitesse axe Z (m/s)',
+			'altitude (m)' 
 	), ';' );
 	for($i = 0; $i < count ($time); $i ++) {
 		fputcsv ( $file, array (
@@ -89,9 +89,9 @@ $path3DZ = implode ( ',', $path3D ['z'] );
 				<table>
 					<thead>
 						<tr>
-							<th>Temps (en ms)</th>
-							<th>Vitesse axe Z</th>
-							<th>Accélération axe Z</th>
+							<th>Temps (en s)</th>
+							<th>Vitesse axe Z (m/s)</th>
+							<th>Accélération axe Z (m/s²)</th>
 							<th>Altitude (en m)</th>
 						</tr>
 					</thead>

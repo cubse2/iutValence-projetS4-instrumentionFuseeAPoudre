@@ -13,4 +13,8 @@ class TimeStampedFlightDataSample extends FlightDataSample{
     public function getTimestamp(){
         return $this->timestamp;
     }
+
+    public function getTimestampInSecond(){
+        return $this->timestamp/1000;
+    }
 }
